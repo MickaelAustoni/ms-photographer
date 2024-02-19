@@ -41,7 +41,7 @@ const getLeftTo = (index: number, selectedImage: number |null) => {
   return index * IMAGE_WIDTH + index * IMAGE_GAP;
 }
 
-const getLeftFrom = (index: number, selectedImage: number |null) => {
+const getLeftFrom = (index: number) => {
   if(index === 0){
     return IMAGE_GAP;
   }
@@ -61,7 +61,7 @@ export default function Home() {
         bottom: IMAGE_GAP,
         width: IMAGE_WIDTH,
         height: IMAGE_HEIGHT,
-        left: getLeftFrom(index, selectedImage),
+        left: getLeftFrom(index),
         zIndex: selectedImage === index ? 0 : 1,
       },
       to: {
