@@ -5,14 +5,16 @@ import { useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
 
 const IMAGES = [
-  "/image-1.jpg",
-  "/image-2.jpg",
-  "/image-3.jpg",
+  "/1.jpg",
+  "/2.jpg",
+  "/3.jpg",
+  "/4.jpg",
+  "/5.jpg",
 ];
 
 const IMAGE_GAP = 10;
-const IMAGE_WIDTH = 300;
-const IMAGE_HEIGHT = 200;
+const IMAGE_WIDTH = 280;
+const IMAGE_HEIGHT = 150;
 
 const getLeftTo = (index: number, selectedImage: number |null) => {
   if(selectedImage === index){
@@ -79,7 +81,6 @@ export default function Home() {
 
   const handleClick = (index: number) => ()=> {
     if(index === 0 && selectedImage === null || selectedImage === index){
-      console.log("HERE");
       return
     }
 
