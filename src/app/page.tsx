@@ -15,10 +15,12 @@ const IMAGE_WIDTH = 300;
 const IMAGE_HEIGHT = 200;
 
 const getLeftTo = (index: number, selectedImage: number |null) => {
-  const isSelectedImage = selectedImage === index;
-
-  if(isSelectedImage){
+  if(selectedImage === index){
     return 0
+  }
+
+  if(index === 0){
+    return IMAGE_GAP;
   }
 
   if(selectedImage === null){
@@ -28,12 +30,12 @@ const getLeftTo = (index: number, selectedImage: number |null) => {
     return index * IMAGE_WIDTH + index * IMAGE_GAP;
   }
 
-  if(index === 0){
-    return IMAGE_GAP;
-  }
-
   if(index > selectedImage){
     return (index - 1) * IMAGE_WIDTH + index * IMAGE_GAP;
+  }
+
+  if(index < selectedImage){
+    return index * IMAGE_WIDTH + (index+1) * IMAGE_GAP;
   }
 
   return index * IMAGE_WIDTH + index * IMAGE_GAP;
