@@ -41,7 +41,12 @@ const getLeftTo = (index: number, selectedImage: number |null) => {
   return index * IMAGE_WIDTH + index * IMAGE_GAP;
 }
 
-const getLeftFrom = (index: number) => {
+const getLeftFrom = (index: number, selectedImage: number |null) => {
+  // Default thumbnail position
+  if(selectedImage === null && index !== 0){
+    return IMAGE_GAP + ((index-1) * IMAGE_WIDTH + index * IMAGE_GAP);
+  }
+
   if(index === 0){
     return IMAGE_GAP;
   }
@@ -56,10 +61,10 @@ export default function Home() {
     IMAGES.length,
     IMAGES.map((_, index) => ({
       from: {
-        bottom: IMAGE_GAP,
-        width: IMAGE_WIDTH,
-        height: IMAGE_HEIGHT,
-        left: getLeftFrom(index),
+        bottom: selectedImage === null && index === 0 ? 0 : IMAGE_GAP,
+        left: selectedImage === null && index === 0 ? 0 : getLeftFrom(index, selectedImage),
+        width: selectedImage === null && index === 0 ? window.innerWidth : IMAGE_WIDTH,
+        height:  selectedImage === null && index === 0 ? window.innerWidth : IMAGE_HEIGHT,
         zIndex: selectedImage === index ? 0 : 1,
       },
       to: {
@@ -73,6 +78,11 @@ export default function Home() {
   );
 
   const handleClick = (index: number) => ()=> {
+    if(index === 0 && selectedImage === null || selectedImage === index){
+      console.log("HERE");
+      return
+    }
+
     setSelectedImage(index);
   };
 
