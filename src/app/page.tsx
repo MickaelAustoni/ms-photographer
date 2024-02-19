@@ -18,7 +18,7 @@ const IMAGE_HEIGHT = 150;
 
 const getLeftTo = (index: number, selectedImage: number |null) => {
   if(selectedImage === index){
-    return 0
+    return 0;
   }
 
   if(index === 0){
@@ -81,7 +81,7 @@ export default function Home() {
 
   const handleClick = (index: number) => ()=> {
     if(index === 0 && selectedImage === null || selectedImage === index){
-      return
+      return;
     }
 
     setSelectedImage(index);
