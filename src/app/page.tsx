@@ -17,20 +17,13 @@ const IMAGE_GAP = 20;
 const IMAGE_WIDTH = 280;
 const IMAGE_HEIGHT = 150;
 
-const getLeftTo = (index: number, selectedImage: number |null) => {
+const getLeftTo = (index: number, selectedImage: number) => {
   if(selectedImage === index){
     return 0;
   }
 
   if(index === 0){
     return IMAGE_GAP;
-  }
-
-  if(selectedImage === null){
-    if(index === 0){
-      return IMAGE_GAP;
-    }
-    return index * IMAGE_WIDTH + index * IMAGE_GAP;
   }
 
   if(index > selectedImage){
@@ -44,12 +37,7 @@ const getLeftTo = (index: number, selectedImage: number |null) => {
   return index * IMAGE_WIDTH + index * IMAGE_GAP;
 }
 
-const getLeftFrom = (index: number, selectedImage: number |null) => {
-  // Default thumbnail position
-  if(selectedImage === null && index !== 0){
-    return ((index-1) * IMAGE_WIDTH + index * IMAGE_GAP);
-  }
-
+const getLeftFrom = (index: number, selectedImage: number) => {
   if(index === 0){
     return IMAGE_GAP;
   }
@@ -59,16 +47,16 @@ const getLeftFrom = (index: number, selectedImage: number |null) => {
 
 export default function Home() {
   const { height, width } = useWindowSize();
-  const [selectedImage, setSelectedImage] = useState<number | null>(0);
+  const [selectedImage, setSelectedImage] = useState<number>(0);
 
   const springs = useSprings(
     IMAGES.length,
     IMAGES.map((_, index) => ({
       from: {
-        bottom: selectedImage === null && index === 0 ? 0 : IMAGE_GAP,
-        left: selectedImage === null && index === 0 ? 0 : getLeftFrom(index, selectedImage),
-        width: selectedImage === null && index === 0 ? width : IMAGE_WIDTH,
-        height:  selectedImage === null && index === 0 ? height : IMAGE_HEIGHT,
+        bottom:  IMAGE_GAP,
+        left: getLeftFrom(index, selectedImage),
+        width: IMAGE_WIDTH,
+        height: IMAGE_HEIGHT,
         zIndex: selectedImage === index ? 0 : 1,
       },
       to: {
@@ -82,7 +70,7 @@ export default function Home() {
   );
 
   const handleClick = (index: number) => ()=> {
-    if(index === 0 && selectedImage === null || selectedImage === index){
+    if(selectedImage === index){
       return;
     }
 
