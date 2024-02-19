@@ -56,18 +56,18 @@ export default function Home() {
     IMAGES.length,
     IMAGES.map((_, index) => ({
       from: {
+        bottom: IMAGE_GAP,
         width: IMAGE_WIDTH,
         height: IMAGE_HEIGHT,
         left: getLeftFrom(index, selectedImage),
         zIndex: selectedImage === index ? 0 : 1,
-        bottom: IMAGE_GAP,
       },
       to: {
+        bottom: selectedImage === index ? 0 : IMAGE_GAP,
         width: selectedImage === index ? window.innerWidth : IMAGE_WIDTH,
         height: selectedImage === index ? window.innerHeight : IMAGE_HEIGHT,
         left: getLeftTo(index, selectedImage),
         zIndex: selectedImage === index ? 0 : 1,
-        bottom: selectedImage === index ? 0 : IMAGE_GAP,
       },
     }))
   );
