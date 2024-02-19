@@ -46,7 +46,7 @@ const getLeftTo = (index: number, selectedImage: number |null) => {
 const getLeftFrom = (index: number, selectedImage: number |null) => {
   // Default thumbnail position
   if(selectedImage === null && index !== 0){
-    return IMAGE_GAP + ((index-1) * IMAGE_WIDTH + index * IMAGE_GAP);
+    return ((index-1) * IMAGE_WIDTH + index * IMAGE_GAP);
   }
 
   if(index === 0){
