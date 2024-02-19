@@ -30,3 +30,7 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+h1 {
+  font-weight: 900;
+}

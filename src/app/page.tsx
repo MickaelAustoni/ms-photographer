@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
+import useWindowSize from "@/hooks/useWindowSize";
 
 const IMAGES = [
   "/1.jpg",
@@ -12,7 +13,7 @@ const IMAGES = [
   "/5.jpg",
 ];
 
-const IMAGE_GAP = 10;
+const IMAGE_GAP = 20;
 const IMAGE_WIDTH = 280;
 const IMAGE_HEIGHT = 150;
 
@@ -57,7 +58,8 @@ const getLeftFrom = (index: number, selectedImage: number |null) => {
 }
 
 export default function Home() {
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const { height, width } = useWindowSize();
+  const [selectedImage, setSelectedImage] = useState<number | null>(0);
 
   const springs = useSprings(
     IMAGES.length,
@@ -65,14 +67,14 @@ export default function Home() {
       from: {
         bottom: selectedImage === null && index === 0 ? 0 : IMAGE_GAP,
         left: selectedImage === null && index === 0 ? 0 : getLeftFrom(index, selectedImage),
-        width: selectedImage === null && index === 0 ? window.innerWidth : IMAGE_WIDTH,
-        height:  selectedImage === null && index === 0 ? window.innerWidth : IMAGE_HEIGHT,
+        width: selectedImage === null && index === 0 ? width : IMAGE_WIDTH,
+        height:  selectedImage === null && index === 0 ? height : IMAGE_HEIGHT,
         zIndex: selectedImage === index ? 0 : 1,
       },
       to: {
         bottom: selectedImage === index ? 0 : IMAGE_GAP,
-        width: selectedImage === index ? window.innerWidth : IMAGE_WIDTH,
-        height: selectedImage === index ? window.innerHeight : IMAGE_HEIGHT,
+        width: selectedImage === index ? width : IMAGE_WIDTH,
+        height: selectedImage === index ? height : IMAGE_HEIGHT,
         left: getLeftTo(index, selectedImage),
         zIndex: selectedImage === index ? 0 : 1,
       },
@@ -89,6 +91,7 @@ export default function Home() {
 
   return (
     <main className={"overflow-hidden w-full h-full"}>
+      <h1 className={"z-20 absolute text-7xl left-6 top-6"}>MICHAEL<br/><span className={"text-primary"}>SANCHEZ</span></h1>
       {springs.map((style, index) => (
         <animated.div key={index} className={"select-none absolute z-10"} style={style}>
           <Image
