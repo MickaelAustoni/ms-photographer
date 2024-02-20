@@ -13,7 +13,7 @@ const IMAGES = [
   "/5.jpg",
 ];
 
-const IMAGE_GAP = 20;
+const IMAGE_GAP = 30;
 const IMAGE_WIDTH = 280;
 const IMAGE_HEIGHT = 150;
 
