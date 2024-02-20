@@ -107,7 +107,7 @@ export default function Home() {
         <span className={"text-primary"}>SANCHEZ</span>
       </h1>
       {springs.map((style, index) => (
-        <animated.div key={index} className={"select-none absolute z-10 origin-top overflow-hidden"} style={style}>
+        <animated.div key={index} className={"select-none absolute z-10 origin-top"} style={style}>
           <Image
             src={IMAGES[index]}
             alt="placeholder"
