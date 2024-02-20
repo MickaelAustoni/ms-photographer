@@ -104,7 +104,7 @@ export default function Home() {
       <h1 className={"z-20 absolute text-7xl left-6 top-6"}>
         MICHAEL
         <br />
-        <span className={"text-primary"}>SANCHEZ</span>
+        <span className={"text-primary font-thin"}>SANCHEZ</span>
       </h1>
       {springs.map((style, index) => (
         <animated.div key={index} className={"select-none absolute z-10 origin-top"} style={style}>

@@ -4,7 +4,7 @@ import "@/styles/globals.css";
 import { ReactNode } from "react";
 
 const inter = Montserrat({
-  weight: ["400", "900"],
+  weight: ["100","400", "900"],
   subsets: ["latin"],
 });
 
