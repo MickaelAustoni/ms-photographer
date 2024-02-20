@@ -76,15 +76,16 @@ export default function Home() {
           left: getLeftFrom(index),
           width: IMAGE_WIDTH,
           height: IMAGE_HEIGHT,
-          zIndex: isSelected ? 0 : 1,
+          zIndex: isSelected ? 0 : 5,
           transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
+          opacity: 1,
         },
         to: {
           bottom: isSelected ? 0 : IMAGE_GAP,
           width: isSelected ? width : IMAGE_WIDTH,
           height: isSelected ? height : IMAGE_HEIGHT,
           left: getLeftTo(index, selectedImage),
-          zIndex: isSelected ? 0 : 1,
+          zIndex: isSelected ? 0 : 5,
           transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
         },
       };
@@ -101,7 +102,7 @@ export default function Home() {
 
   return (
     <main className={"overflow-hidden w-full h-full"}>
-      <h1 className={"z-20 absolute text-7xl left-6 top-6"}>
+      <h1 className={"z-20 absolute text-7xl left-6 top-6 tracking-widest select-none"}>
         MICHAEL
         <br />
         <span className={"text-primary font-thin"}>SANCHEZ</span>
