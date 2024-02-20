@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
 import useWindowSize from "@/hooks/useWindowSize";
 
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 400;
 const IMAGE_GAP = 30;
 const IMAGE_WIDTH = 280;
 const IMAGE_HEIGHT = 150;
@@ -122,7 +122,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       <animated.div
         key={index}
         style={style}
-        className={"select-none absolute z-10 origin-top"}>
+        className={`select-none absolute z-10 origin-top transition-opacity ${selectedImage !== index && isAnimating ? `opacity-0 duration-200 `: `opacity-1 duration-1000 `}`}>
           <Image
             src={images[index]}
             alt="placeholder"
