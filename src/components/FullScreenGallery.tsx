@@ -96,7 +96,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   };
 
   return springs.map((style, index) => (
-      <animated.div key={index} className={"select-none absolute z-10 origin-top"} style={style}>
+      <animated.div key={index} style={style} className={"select-none absolute z-10 origin-top"}>
         <Image
           src={images[index]}
           alt="placeholder"
