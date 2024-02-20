@@ -78,7 +78,6 @@ export default function Home() {
           height: IMAGE_HEIGHT,
           zIndex: isSelected ? 0 : 5,
           transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
-          opacity: 1,
         },
         to: {
           bottom: isSelected ? 0 : IMAGE_GAP,
