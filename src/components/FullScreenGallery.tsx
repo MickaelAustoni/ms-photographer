@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { useSprings, animated, useSpring } from "@react-spring/web";
+import { useSprings, animated } from "@react-spring/web";
 import useWindowSize from "@/hooks/useWindowSize";
 
 const ANIMATION_DURATION = 1000;
