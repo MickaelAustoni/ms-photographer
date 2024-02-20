@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
 import useWindowSize from "@/hooks/useWindowSize";
 
-const ANIMATION_DURATION = 1000;
+const ANIMATION_DURATION = 500;
 const IMAGE_GAP = 30;
 const IMAGE_WIDTH = 280;
 const IMAGE_HEIGHT = 150;
@@ -77,7 +77,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         width: isSelected ? IMAGE_WIDTH : width,
         height: isSelected ? IMAGE_HEIGHT : height,
         transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
-        opacity: 1,
+        zIndex: getZIndex(index, selectedImage, isAnimating),
       },
       to: {
         bottom: isSelected ? 0 : IMAGE_GAP,
@@ -85,6 +85,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         height: isSelected ? height : IMAGE_HEIGHT,
         left: getLeftTo(index, selectedImage),
         transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
+        zIndex: getZIndex(index, selectedImage, isAnimating),
       },
       config: {
         duration: ANIMATION_DURATION,
@@ -120,10 +121,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   return springs.map((style, index) => (
       <animated.div
         key={index}
-        style={{
-          ...style,
-          zIndex: getZIndex(index, selectedImage, isAnimating)
-        }}
+        style={style}
         className={"select-none absolute z-10 origin-top"}>
           <Image
             src={images[index]}
