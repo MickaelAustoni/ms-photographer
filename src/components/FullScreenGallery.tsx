@@ -38,7 +38,7 @@ const variants : Variants = {
   },
 }
 
-const getXOpen = (index: number, selectedImage: number) => {
+const getXThumb = (index: number, selectedImage: number) => {
   if (selectedImage === index) {
     return 0;
   }
@@ -58,7 +58,7 @@ const getXOpen = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
-const getX = (index: number) => {
+const getXOpen = (index: number) => {
   if (index === 0) {
     return THUMB_GAP;
   }
@@ -92,14 +92,14 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 5,
-          x: getXOpen(index, selectedImage)
+          x: getXThumb(index, selectedImage)
         },
         open: {
           opacity: 1,
           width: "100%",
           height: "100%",
           zIndex: 0,
-          x: [getX(index), 0],
+          x: [getXOpen(index), 0],
           y: [THUMB_GAP, 0],
         },
         close: {
