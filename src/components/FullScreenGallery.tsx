@@ -63,32 +63,32 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const springs = useSprings(
   images.length,
   images.map((_, index) => {
-    const isSelected = selectedImage === index;
-    const parallaxX = isSelected && mousePosition.x ? Math.abs((mousePosition.x - width / 2) / 50) : 0;
-    const parallaxY = isSelected && mousePosition.y ? Math.abs((mousePosition.y - height / 2) / 50) : 0;
+    const isSelectedImage = selectedImage === index;
+    const parallaxX = isSelectedImage && mousePosition.x ? Math.abs((mousePosition.x - width / 2) / 50) : 0;
+    const parallaxY = isSelectedImage && mousePosition.y ? Math.abs((mousePosition.y - height / 2) / 50) : 0;
 
     return {
       onStart: () => {
         setIsAnimating(true);
       },
+      config: {
+        duration: ANIMATION_DURATION,
+      },
       from: {
         bottom: IMAGE_GAP,
         left: getLeftFrom(index),
-        width: isSelected ? IMAGE_WIDTH : width,
-        height: isSelected ? IMAGE_HEIGHT : height,
+        width: isSelectedImage ? IMAGE_WIDTH : width,
+        height: isSelectedImage ? IMAGE_HEIGHT : height,
         transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
         zIndex: getZIndex(index, selectedImage, isAnimating),
       },
       to: {
-        bottom: isSelected ? 0 : IMAGE_GAP,
-        width: isSelected ? width : IMAGE_WIDTH,
-        height: isSelected ? height : IMAGE_HEIGHT,
+        bottom: isSelectedImage ? 0 : IMAGE_GAP,
+        width: isSelectedImage ? width : IMAGE_WIDTH,
+        height: isSelectedImage ? height : IMAGE_HEIGHT,
         left: getLeftTo(index, selectedImage),
         transform: `translate3d(${parallaxX}px, ${parallaxY}px, 0)`,
         zIndex: getZIndex(index, selectedImage, isAnimating),
-      },
-      config: {
-        duration: ANIMATION_DURATION,
       },
       onRest: () => {
         setIsAnimating(false);
