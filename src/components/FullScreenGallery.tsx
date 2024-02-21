@@ -121,12 +121,13 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   }, []);
 
   return springs.map((style, index) => {
-    const fade = selectedImage !== index && isAnimating || lastSelectedImage === index && isAnimating;
+    const isThumb = selectedImage !== index
+    const fade = isThumb && isAnimating || lastSelectedImage === index && isAnimating;
 
     return <animated.div
       key={index}
       style={style}
-      className={`select-none absolute z-10 origin-top transition-opacity ${fade ? `opacity-0 duration-300 ` : `opacity-1 duration-1000 `}`}>
+      className={`select-none absolute z-10 origin-top transition-opacity ${isThumb ? "thumb" : "full"} ${fade ? "opacity-0 duration-300" : "opacity-1 duration-1000"}`}>
       <Image
         src={images[index]}
         alt="placeholder"
