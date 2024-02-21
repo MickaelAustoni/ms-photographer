@@ -5,9 +5,9 @@ import { useEffect, useState } from "react";
 import { useSprings, animated } from "@react-spring/web";
 import useWindowSize from "@/hooks/useWindowSize";
 
-const ANIMATION_DURATION = 400;
+const ANIMATION_DURATION = 350;
 const IMAGE_GAP = 30;
-const IMAGE_WIDTH = 280;
+const IMAGE_WIDTH = 250;
 const IMAGE_HEIGHT = 150;
 
 const getLeftTo = (index: number, selectedImage: number) => {
@@ -57,6 +57,7 @@ interface FullScreenGalleryProps {
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const { height, width } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
+  const [lastSelectedImage, setLastSelectedImage] = useState(-1);
   const [isAnimating, setIsAnimating] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -64,8 +65,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   images.length,
   images.map((_, index) => {
     const isSelectedImage = selectedImage === index;
-    const parallaxX = isSelectedImage && mousePosition.x ? Math.abs((mousePosition.x - width / 2) / 50) : 0;
-    const parallaxY = isSelectedImage && mousePosition.y ? Math.abs((mousePosition.y - height / 2) / 50) : 0;
+    const parallaxX = !isAnimating && isSelectedImage && mousePosition.x ? Math.abs((mousePosition.x - width / 2) / 50) : 0;
+    const parallaxY = !isAnimating && isSelectedImage && mousePosition.y ? Math.abs((mousePosition.y - height / 2) / 50) : 0;
 
     return {
       onStart: () => {
@@ -102,6 +103,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       return;
     }
 
+    setLastSelectedImage(selectedImage);
     setSelectedImage(index);
   };
 
@@ -118,20 +120,22 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     };
   }, []);
 
-  return springs.map((style, index) => (
-      <animated.div
-        key={index}
-        style={style}
-        className={`select-none absolute z-10 origin-top transition-opacity ${selectedImage !== index && isAnimating ? `opacity-0 duration-300 `: `opacity-1 duration-1000 `}`}>
-          <Image
-            src={images[index]}
-            alt="placeholder"
-            priority={true}
-            height={1920}
-            width={1080}
-            className={`cursor-pointer w-full h-full object-cover${selectedImage === index ? " scale-105" : ""}`}
-            onClick={handleClick(index)}
-          />
-      </animated.div>
-    ));
+  return springs.map((style, index) => {
+    const fade = selectedImage !== index && isAnimating || lastSelectedImage === index && isAnimating;
+
+    return <animated.div
+      key={index}
+      style={style}
+      className={`select-none absolute z-10 origin-top transition-opacity ${fade ? `opacity-0 duration-300 ` : `opacity-1 duration-1000 `}`}>
+      <Image
+        src={images[index]}
+        alt="placeholder"
+        priority={true}
+        height={1920}
+        width={1080}
+        className={`cursor-pointer w-full h-full object-cover${selectedImage === index ? " scale-105" : ""}`}
+        onClick={handleClick(index)}
+      />
+    </animated.div>
+  });
 }
