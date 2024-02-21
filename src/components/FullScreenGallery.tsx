@@ -122,7 +122,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       <animated.div
         key={index}
         style={style}
-        className={`select-none absolute z-10 origin-top transition-opacity ${selectedImage !== index && isAnimating ? `opacity-0 duration-200 `: `opacity-1 duration-1000 `}`}>
+        className={`select-none absolute z-10 origin-top transition-opacity ${selectedImage !== index && isAnimating ? `opacity-0 duration-300 `: `opacity-1 duration-1000 `}`}>
           <Image
             src={images[index]}
             alt="placeholder"
