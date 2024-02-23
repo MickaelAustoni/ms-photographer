@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import {  useState } from "react";
+import { useMemo, useState } from "react";
 import { motion, Variants } from "framer-motion";
 
 interface FullScreenGalleryProps {
@@ -12,31 +12,6 @@ const ANIMATION_DURATION = 2;
 const THUMB_GAP = 30;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
-
-const variants : Variants = {
-  thumb: {
-    opacity: 1,
-    bottom: THUMB_GAP,
-    width: THUMB_WIDTH,
-    height: THUMB_HEIGHT,
-    zIndex: 5
-  },
-  open: {
-    opacity: 1,
-    width: "100%",
-    height: "100%",
-    zIndex: 0,
-    x: 0,
-    y:0,
-  },
-  close: {
-    opacity: [0, 1],
-    bottom: THUMB_GAP,
-    width: THUMB_WIDTH,
-    height: THUMB_HEIGHT,
-    zIndex: 5
-  },
-}
 
 const getXThumb = (index: number, selectedImage: number) => {
   if (selectedImage === index) {
@@ -58,14 +33,6 @@ const getXThumb = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
-const getXOpen = (index: number) => {
-  if (index === 0) {
-    return THUMB_GAP;
-  }
-
-  return THUMB_GAP + (index * THUMB_WIDTH + index * THUMB_GAP);
-};
-
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(-1);
@@ -79,37 +46,37 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     setSelectedImage(index);
   };
 
-  return images.map((src, index) => {
-    const isSelectedImage = selectedImage === index;
-
-    return <motion.div
-      key={index}
-      className={"select-none absolute z-10"}
-      variants={{
+  const variants = useMemo(()=>{
+    return (index: number)=> {
+      return {
         thumb: {
           opacity: 1,
-          bottom: THUMB_GAP,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 5,
-          x: getXThumb(index, selectedImage)
+          x: getXThumb(index, selectedImage),
+          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
         open: {
           opacity: 1,
           width: "100%",
           height: "100%",
           zIndex: 0,
-          x: [getXOpen(index), 0],
-          y: [THUMB_GAP, 0],
-        },
-        close: {
-          opacity: [0, 1],
-          bottom: THUMB_GAP,
-          width: THUMB_WIDTH,
-          height: THUMB_HEIGHT,
-          zIndex: 5
-        },
-      }}
+          x: 0,
+          y: 0
+        }
+      } as Variants
+    }
+
+  }, [selectedImage])
+
+  return images.map((src, index) => {
+    const isSelectedImage = selectedImage === index;
+
+    return <motion.div
+      key={index}
+      className={"select-none absolute"}
+      variants={variants(index)}
       animate={isSelectedImage ? "open" : "thumb"}
       transition={{
         duration : ANIMATION_DURATION
