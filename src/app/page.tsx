@@ -1,5 +1,6 @@
 import FullScreenGallery from "@/components/FullScreenGallery";
 import Title from "@/components/Title";
+import Copyright from "@/components/Copyright";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         "/images/gallery/4.jpg",
         "/images/gallery/5.jpg",
       ]} />
+      <Copyright />
     </main>
   );
 }
