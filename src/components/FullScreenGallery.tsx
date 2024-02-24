@@ -70,7 +70,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 5,
+          zIndex: 20,
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
@@ -78,7 +78,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 1,
           width: "100%",
           height: "100%",
-          zIndex: [5, 0],
+          zIndex: [20, 0],
           x: 0,
           y: 0
         },
@@ -86,7 +86,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: [1, 0, 1],
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 5,
+          zIndex: 20,
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
@@ -95,29 +95,31 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
   }, [selectedImage])
 
-  return images.map((src, index) => {
-
-    return <motion.div
-      key={index}
-      className={"select-none absolute"}
-      variants={variants(index)}
-      animate={getVariantName(index, selectedImage, lastSelectedImage)}
-      transition={{
-        duration : ANIMATION_DURATION
-      }}
-      initial={{
-        opacity: 0,
-      }}
-    >
-      <Image
-        src={src}
-        alt="placeholder"
-        priority={true}
-        height={1920}
-        width={1080}
-        className={`cursor-pointer w-full h-full object-cover${selectedImage === index ? " scale-105" : ""}`}
-        onClick={handleClick(index)}
-      />
-    </motion.div>
-  });
+  return <>
+    <div className={"absolute inset-0 z-10 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
+    {images.map((src, index) => (
+        <motion.div
+          key={index}
+          className={"select-none absolute"}
+          variants={variants(index)}
+          animate={getVariantName(index, selectedImage, lastSelectedImage)}
+          transition={{
+            duration : ANIMATION_DURATION
+          }}
+          initial={{
+            opacity: 0,
+          }}
+        >
+          <Image
+            src={src}
+            alt="placeholder"
+            priority={true}
+            height={1920}
+            width={1080}
+            className={`cursor-pointer w-full h-full object-cover${selectedImage === index ? " scale-105" : ""}`}
+            onClick={handleClick(index)}
+          />
+        </motion.div>
+      ))}
+  </>
 }
