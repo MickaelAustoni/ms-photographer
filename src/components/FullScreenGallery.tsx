@@ -8,7 +8,7 @@ interface FullScreenGalleryProps {
   images: string[];
 }
 
-const ANIMATION_DURATION = 2;
+const ANIMATION_DURATION = 0.8;
 const THUMB_GAP = 30;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
@@ -32,6 +32,23 @@ const getXThumb = (index: number, selectedImage: number) => {
 
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
+
+const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number) => {
+  if (selectedImage === index) {
+    return "full";
+  }
+
+  if (selectedImage === -1) {
+    return "thumb";
+  }
+
+  if (index === lastSelectedImage) {
+    return "close";
+  }
+
+  return "thumb";
+
+}
 
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -57,27 +74,34 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
-        open: {
+        full: {
           opacity: 1,
           width: "100%",
           height: "100%",
-          zIndex: 0,
+          zIndex: [5, 0],
           x: 0,
           y: 0
-        }
+        },
+        close : {
+          opacity: [1, 0, 1],
+          width: THUMB_WIDTH,
+          height: THUMB_HEIGHT,
+          zIndex: 5,
+          x: getXThumb(index, selectedImage),
+          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
+        },
       } as Variants
     }
 
   }, [selectedImage])
 
   return images.map((src, index) => {
-    const isSelectedImage = selectedImage === index;
 
     return <motion.div
       key={index}
       className={"select-none absolute"}
       variants={variants(index)}
-      animate={isSelectedImage ? "open" : "thumb"}
+      animate={getVariantName(index, selectedImage, lastSelectedImage)}
       transition={{
         duration : ANIMATION_DURATION
       }}
