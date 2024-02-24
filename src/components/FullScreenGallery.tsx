@@ -35,7 +35,7 @@ const getXThumb = (index: number, selectedImage: number) => {
 
 const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number) => {
   if (selectedImage === index) {
-    return "full";
+    return "open";
   }
 
   if (selectedImage === -1) {
@@ -74,7 +74,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
-        full: {
+        open: {
           opacity: 1,
           width: "100%",
           height: "100%",
