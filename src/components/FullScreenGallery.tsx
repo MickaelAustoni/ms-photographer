@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState } from "react";
 import { motion, Variants } from "framer-motion";
+import useWindowSize from "@/hooks/useWindowSize";
 
 interface FullScreenGalleryProps {
   images: string[];
@@ -54,6 +55,7 @@ const getVariantName = (index: number, selectedImage: number, lastSelectedImage:
 }
 
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
+  const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(-1);
   const [isAnimation, setIsAnimation] = useState(false);
@@ -70,22 +72,25 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
   const variants = useMemo(()=>{
     return (index: number)=> {
+      const x = getXThumb(index, selectedImage);
+      const y = height - THUMB_HEIGHT - THUMB_GAP;
+
       return {
         thumb: {
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 20,
-          x: getXThumb(index, selectedImage),
-          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
+          x,
+          y
         },
         thumbOut: {
           opacity: 0,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 0,
-          x: getXThumb(index, selectedImage),
-          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`,
+          x,
+          y,
           transitionEnd: {
             zIndex: 20
           }
@@ -109,13 +114,13 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           transitionEnd: {
             zIndex: 20
           },
-          x: getXThumb(index, selectedImage),
-          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
+          x,
+          y
         },
       } as Variants
     }
 
-  }, [selectedImage]);
+  }, [height, selectedImage]);
 
 
   return <>
