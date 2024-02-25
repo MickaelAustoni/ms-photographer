@@ -9,7 +9,7 @@ interface FullScreenGalleryProps {
   images: string[];
 }
 
-const ANIMATION_DURATION = 0.8;
+const ANIMATION_DURATION = 0.5;
 const THUMB_GAP = 30;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
