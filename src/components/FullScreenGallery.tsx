@@ -68,6 +68,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 20,
+          scale: 1,
         },
         open: {
           x: 0,
@@ -75,6 +76,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           width: "100%",
           height: "100%",
           zIndex: isAnimation ? 30 : 0,
+          scale: [1, 2, 1],
           transitionEnd: {
             zIndex: 0,
           },
@@ -90,7 +92,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     {images.map((src, index) => (
       <motion.div
         key={index}
-        className="select-none absolute"
+        className="absolute"
         variants={variants(index)}
         animate={getVariantName(index, selectedImage)}
         onAnimationComplete={() => setIsAnimation(false)}
@@ -102,15 +104,34 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           transition: `opacity ${ANIMATION_DURATION}s`,
         }}
       >
-        <Image
-          src={src}
-          alt="placeholder"
-          priority={true}
-          height={1920}
-          width={1080}
-          className={`cursor-pointer w-full h-full object-cover`}
-          onClick={handleClick(index)}
-        />
+        <motion.div
+          className="absolute w-full h-full"
+          animate={selectedImage !== index && isAnimation ? "fadeOut" : "fadeIn"}
+          variants={{
+            fadeIn: {
+              opacity: 1,
+              transition: {
+                duration: ANIMATION_DURATION,
+              },
+            },
+            fadeOut: {
+              opacity: 0,
+              transition: {
+                duration: ANIMATION_DURATION,
+              },
+            },
+          }}
+        >
+          <Image
+            src={src}
+            alt="placeholder"
+            priority={true}
+            height={1920}
+            width={1080}
+            className={`cursor-pointer w-full h-full object-cover`}
+            onClick={handleClick(index)}
+          />
+        </motion.div>
       </motion.div>
     ))}
   </>
