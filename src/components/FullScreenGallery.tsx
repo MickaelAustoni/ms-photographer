@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import useWindowSize from "@/hooks/useWindowSize";
 
 interface FullScreenGalleryProps {
