@@ -68,15 +68,13 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 20,
-          scale: 1,
         },
         open: {
           x: 0,
           y: 0,
           width: "100%",
-          height: "100%",
+          height,
           zIndex: isAnimation ? 30 : 0,
-          scale: [1, 2, 1],
           transitionEnd: {
             zIndex: 0,
           },
@@ -98,10 +96,6 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         onAnimationComplete={() => setIsAnimation(false)}
         transition={{
           duration: ANIMATION_DURATION
-        }}
-        style={{
-          opacity: selectedImage !== index && isAnimation ? 0 : 1,
-          transition: `opacity ${ANIMATION_DURATION}s`,
         }}
       >
         <motion.div
