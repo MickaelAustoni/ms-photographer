@@ -77,36 +77,38 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
       return {
         thumb: {
+          x,
+          y,
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 20,
-          x,
-          y
         },
         thumbOut: {
+          x,
+          y,
           opacity: 0,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
           zIndex: 0,
-          x,
-          y,
           transitionEnd: {
             zIndex: 20
-          }
+          },
         },
         open: {
+          x: 0,
+          y: 0,
           opacity: 1,
           width: "100%",
           height: "100%",
           zIndex: 20,
-          x: 0,
-          y: 0,
           transitionEnd: {
             zIndex: 0
-          }
+          },
         },
         close : {
+          x,
+          y,
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
@@ -114,8 +116,6 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           transitionEnd: {
             zIndex: 20
           },
-          x,
-          y
         },
       } as Variants
     }
