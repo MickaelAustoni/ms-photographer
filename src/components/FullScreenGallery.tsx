@@ -33,7 +33,11 @@ const getXThumb = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
-const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number) => {
+const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number, isAnimation: boolean) => {
+  if (isAnimation && index !== selectedImage) {
+    return "thumbOut";
+  }
+
   if (selectedImage === index) {
     return "open";
   }
@@ -47,12 +51,12 @@ const getVariantName = (index: number, selectedImage: number, lastSelectedImage:
   }
 
   return "thumb";
-
 }
 
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(-1);
+  const [isAnimation, setIsAnimation] = useState(false);
 
   const handleClick = (index: number) => () => {
     if (selectedImage === index) {
@@ -61,6 +65,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     setLastSelectedImage(selectedImage);
     setSelectedImage(index);
+    setIsAnimation(true);
   };
 
   const variants = useMemo(()=>{
@@ -74,26 +79,38 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
+        thumbOut: {
+          opacity: 0,
+          width: THUMB_WIDTH,
+          height: THUMB_HEIGHT,
+          zIndex: 20,
+          x: getXThumb(index, selectedImage),
+          y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`,
+        },
         open: {
           opacity: 1,
           width: "100%",
           height: "100%",
-          zIndex: [20, 0],
+          zIndex: 20,
           x: 0,
-          y: 0
+          y: 0,
+          transitionEnd: {
+            zIndex: 0
+          }
         },
         close : {
-          opacity: [1, 0, 1],
+          opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 20,
+          zIndex: [0, 20],
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
       } as Variants
     }
 
-  }, [selectedImage])
+  }, [selectedImage]);
+
 
   return <>
     <div className={"absolute inset-0 z-10 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
@@ -102,7 +119,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           key={index}
           className={"select-none absolute"}
           variants={variants(index)}
-          animate={getVariantName(index, selectedImage, lastSelectedImage)}
+          animate={getVariantName(index, selectedImage, lastSelectedImage, isAnimation)}
+          onAnimationComplete={() => setIsAnimation(false)}
           transition={{
             duration : ANIMATION_DURATION
           }}
