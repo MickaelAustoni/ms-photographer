@@ -35,20 +35,8 @@ const getXThumb = (index: number, selectedImage: number) => {
 };
 
 const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number, isAnimation: boolean) => {
-  if (isAnimation && index !== selectedImage) {
-    return "thumbOut";
-  }
-
   if (selectedImage === index) {
     return "open";
-  }
-
-  if (selectedImage === -1) {
-    return "thumb";
-  }
-
-  if (index === lastSelectedImage) {
-    return "close";
   }
 
   return "thumb";
@@ -82,18 +70,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 20,
-        },
-        thumbOut: {
-          x,
-          y,
-          opacity: 0,
-          width: THUMB_WIDTH,
-          height: THUMB_HEIGHT,
-          zIndex: 0,
-          transitionEnd: {
-            zIndex: 20
-          },
+          zIndex: 20
         },
         open: {
           x: 0,
@@ -101,26 +78,15 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 1,
           width: "100%",
           height: "100%",
-          zIndex: 20,
+          zIndex: isAnimation ? 30 : 0,
           transitionEnd: {
-            zIndex: 0
-          },
-        },
-        close : {
-          x,
-          y,
-          opacity: 1,
-          width: THUMB_WIDTH,
-          height: THUMB_HEIGHT,
-          zIndex: 0,
-          transitionEnd: {
-            zIndex: 20
-          },
+            zIndex: 0,
+          }
         },
       } as Variants
     }
 
-  }, [height, selectedImage]);
+  }, [height, isAnimation, selectedImage]);
 
 
   return <>
