@@ -14,7 +14,7 @@ const THUMB_GAP = 30;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 
-const getXThumb = (index: number, selectedImage: number) => {
+const getThumbX = (index: number, selectedImage: number) => {
   if (index > selectedImage) {
     return (index - 1) * THUMB_WIDTH + index * THUMB_GAP;
   }
@@ -65,7 +65,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     {/* Thumbnails */}
     {images.map((src, index) => {
-      const x = getXThumb(index, selectedImage);
+      const x = getThumbX(index, selectedImage);
       const y = height - THUMB_HEIGHT - THUMB_GAP;
 
       return <motion.div
