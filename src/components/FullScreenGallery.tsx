@@ -34,7 +34,7 @@ const getXThumb = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
-const getVariantName = (index: number, selectedImage: number, lastSelectedImage: number, isAnimation: boolean) => {
+const getVariantName = (index: number, selectedImage: number) => {
   if (selectedImage === index) {
     return "open";
   }
@@ -45,7 +45,6 @@ const getVariantName = (index: number, selectedImage: number, lastSelectedImage:
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [lastSelectedImage, setLastSelectedImage] = useState(-1);
   const [isAnimation, setIsAnimation] = useState(false);
 
   const handleClick = (index: number) => () => {
@@ -53,7 +52,6 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       return;
     }
 
-    setLastSelectedImage(selectedImage);
     setSelectedImage(index);
     setIsAnimation(true);
   };
@@ -67,21 +65,19 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         thumb: {
           x,
           y,
-          opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 20
+          zIndex: 20,
         },
         open: {
           x: 0,
           y: 0,
-          opacity: 1,
           width: "100%",
           height: "100%",
           zIndex: isAnimation ? 30 : 0,
           transitionEnd: {
             zIndex: 0,
-          }
+          },
         },
       } as Variants
     }
@@ -90,31 +86,32 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
 
   return <>
-    <div className={"absolute inset-0 z-10 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
+    <div className={"absolute pointer-events-none inset-0 z-10 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
     {images.map((src, index) => (
-        <motion.div
-          key={index}
-          className={"select-none absolute"}
-          variants={variants(index)}
-          animate={getVariantName(index, selectedImage, lastSelectedImage, isAnimation)}
-          onAnimationComplete={() => setIsAnimation(false)}
-          transition={{
-            duration : ANIMATION_DURATION
-          }}
-          initial={{
-            opacity: 0,
-          }}
-        >
-          <Image
-            src={src}
-            alt="placeholder"
-            priority={true}
-            height={1920}
-            width={1080}
-            className={`cursor-pointer w-full h-full object-cover${selectedImage === index ? " scale-105" : ""}`}
-            onClick={handleClick(index)}
-          />
-        </motion.div>
-      ))}
+      <motion.div
+        key={index}
+        className="select-none absolute"
+        variants={variants(index)}
+        animate={getVariantName(index, selectedImage)}
+        onAnimationComplete={() => setIsAnimation(false)}
+        transition={{
+          duration: ANIMATION_DURATION
+        }}
+        style={{
+          opacity: selectedImage !== index && isAnimation ? 0 : 1,
+          transition: `opacity ${ANIMATION_DURATION}s`,
+        }}
+      >
+        <Image
+          src={src}
+          alt="placeholder"
+          priority={true}
+          height={1920}
+          width={1080}
+          className={`cursor-pointer w-full h-full object-cover`}
+          onClick={handleClick(index)}
+        />
+      </motion.div>
+    ))}
   </>
 }
