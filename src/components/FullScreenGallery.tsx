@@ -83,9 +83,12 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 0,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 20,
+          zIndex: 0,
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`,
+          transitionEnd: {
+            zIndex: 20
+          }
         },
         open: {
           opacity: 1,
@@ -102,7 +105,10 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           opacity: 1,
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: [0, 20],
+          zIndex: 0,
+          transitionEnd: {
+            zIndex: 20
+          },
           x: getXThumb(index, selectedImage),
           y: `calc(100vh - ${THUMB_HEIGHT + THUMB_GAP}px)`
         },
