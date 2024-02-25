@@ -35,3 +35,34 @@ body {
 h1 {
   font-weight: 900;
 }
+
+@-webkit-keyframes mask-play {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+@keyframes mask-play {
+  from {
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+  to {
+    -webkit-mask-position: 100% 0;
+    mask-position: 100% 0;
+  }
+}
+
+.mask-hide {
+  -webkit-mask: url(/images/mask-sprite.png);
+  mask: url(/images/mask-sprite.png);
+  -webkit-mask-size: 8400% 100%;
+  mask-size: 8400% 100%;
+  -webkit-animation: mask-play 1.4s steps(83) forwards;
+  animation: mask-play 1.4s steps(83) forwards;
+}
