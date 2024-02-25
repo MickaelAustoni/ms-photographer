@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { motion, Variants } from "framer-motion";
 import useWindowSize from "@/hooks/useWindowSize";
 
@@ -15,14 +15,6 @@ const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 
 const getXThumb = (index: number, selectedImage: number) => {
-  if (selectedImage === index) {
-    return 0;
-  }
-
-  if (index === 0) {
-    return THUMB_GAP;
-  }
-
   if (index > selectedImage) {
     return (index - 1) * THUMB_WIDTH + index * THUMB_GAP;
   }
@@ -34,104 +26,90 @@ const getXThumb = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
-const getVariantName = (index: number, selectedImage: number) => {
-  if (selectedImage === index) {
-    return "open";
-  }
-
-  return "thumb";
-}
-
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [isAnimation, setIsAnimation] = useState(false);
+  const [lastSelectedImage, setLastSelectedImage] = useState(0);
 
   const handleClick = (index: number) => () => {
-    if (selectedImage === index) {
-      return;
-    }
-
+    setLastSelectedImage(selectedImage);
     setSelectedImage(index);
-    setIsAnimation(true);
   };
 
-  const variants = useMemo(()=>{
-    return (index: number)=> {
+  return <>
+    {/* Overlay */}
+    <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
+
+    {/* Previous image */}
+    <motion.div className={"absolute pointer-events-none inset-0 z-10"}>
+      <Image
+        src={images[lastSelectedImage]}
+        alt="Photo"
+        height={1920}
+        width={1080}
+        className={"w-full h-full object-cover"}
+      />
+    </motion.div>
+
+    {/* Selected image */}
+    <motion.div className={"absolute pointer-events-none inset-0 z-20"}>
+      <Image
+        src={images[selectedImage]}
+        alt="Photo"
+        priority={true}
+        height={1920}
+        width={1080}
+        className={"w-full h-full object-cover"}
+      />
+    </motion.div>
+
+    {/* Thumbnails */}
+    {images.map((src, index) => {
       const x = getXThumb(index, selectedImage);
       const y = height - THUMB_HEIGHT - THUMB_GAP;
 
-      return {
-        thumb: {
-          x,
-          y,
+      return <motion.div
+        key={index}
+        className="absolute z-50"
+        animate={selectedImage === index ? "selected" : "thumb"}
+        initial={false}
+        style={{
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
-          zIndex: 20,
-        },
-        open: {
-          x: 0,
-          y: 0,
-          width: "100%",
-          height,
-          zIndex: isAnimation ? 30 : 0,
-          transitionEnd: {
-            zIndex: 0,
+        }}
+        variants={{
+          thumb: {
+            x,
+            y,
+            opacity: 1,
           },
-        },
-      } as Variants
-    }
-
-  }, [height, isAnimation, selectedImage]);
-
-
-  return <>
-    <div className={"absolute pointer-events-none inset-0 z-10 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
-    {images.map((src, index) => (
-      <motion.div
-        key={index}
-        className="absolute"
-        variants={variants(index)}
-        animate={getVariantName(index, selectedImage)}
-        onAnimationComplete={() => setIsAnimation(false)}
-        initial={false}
+          selected: {
+            x,
+            y,
+            opacity: 0,
+          },
+        }}
         transition={{
           duration: ANIMATION_DURATION
         }}
       >
-        <motion.div
-          className="absolute w-full h-full"
-          animate={selectedImage !== index && isAnimation ? "fadeOut" : "fadeIn"}
-          transition={{
-            duration: ANIMATION_DURATION
+        <Image
+          src={src}
+          alt="Thumbnail"
+          priority={index === 0}
+          height={1920}
+          width={1080}
+          className={"cursor-pointer w-full h-full object-cover"}
+          onClick={handleClick(index)}
+          style={{
+            ...(selectedImage !== index && {
+              maskImage: "url(/images/mask-thumb.png)",
+              WebkitMaskImage: "url(/images/mask-thumb.png)",
+              maskSize: "100% 100%",
+            }),
           }}
-          variants={{
-            fadeIn: {
-              opacity: 1,
-            },
-            fadeOut: {
-              opacity: 0,
-            },
-          }}
-        >
-          <Image
-            src={src}
-            alt="placeholder"
-            priority={true}
-            height={1920}
-            width={1080}
-            className={"cursor-pointer w-full h-full object-cover"}
-            onClick={handleClick(index)}
-            style={{
-              ...(selectedImage !== index && {
-                maskImage: "url(/images/mask-thumb.png)",
-                WebkitMaskImage: "url(/images/mask-thumb.png)",
-                maskSize: "100% 100%",
-              }),
-            }}
-          />
-        </motion.div>
+        />
       </motion.div>
-    ))}
+    })}
   </>
 }
