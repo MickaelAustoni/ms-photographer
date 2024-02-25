@@ -102,18 +102,15 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         <motion.div
           className="absolute w-full h-full"
           animate={selectedImage !== index && isAnimation ? "fadeOut" : "fadeIn"}
+          transition={{
+            duration: ANIMATION_DURATION
+          }}
           variants={{
             fadeIn: {
               opacity: 1,
-              transition: {
-                duration: ANIMATION_DURATION,
-              },
             },
             fadeOut: {
               opacity: 0,
-              transition: {
-                duration: ANIMATION_DURATION,
-              },
             },
           }}
         >
@@ -123,8 +120,15 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
             priority={true}
             height={1920}
             width={1080}
-            className={`cursor-pointer w-full h-full object-cover`}
+            className={"cursor-pointer w-full h-full object-cover"}
             onClick={handleClick(index)}
+            style={{
+              ...(selectedImage !== index && {
+                maskImage: "url(/images/mask-thumb.png)",
+                WebkitMaskImage: "url(/images/mask-thumb.png)",
+                maskSize: "100% 100%",
+              }),
+            }}
           />
         </motion.div>
       </motion.div>
