@@ -94,6 +94,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         variants={variants(index)}
         animate={getVariantName(index, selectedImage)}
         onAnimationComplete={() => setIsAnimation(false)}
+        initial={false}
         transition={{
           duration: ANIMATION_DURATION
         }}
