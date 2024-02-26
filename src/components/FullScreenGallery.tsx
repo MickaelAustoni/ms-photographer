@@ -49,33 +49,30 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     {/* Overlay */}
     <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
 
-    <div style={{ background: `url(/images/mask-sprite.png) no-repeat -9999px -9999px`}}>
+    {/* Previous image */}
+    <div className={"absolute pointer-events-none inset-0 z-10"}>
+      <Image
+        src={images[2]}
+        alt="Photo"
+        height={1920}
+        width={1080}
+        className={"w-full h-full object-cover"}
+      />
+    </div>
 
-      {/* Previous image */}
-      <motion.div className={"absolute pointer-events-none inset-0 z-10"}>
-        <Image
-          src={images[2]}
-          alt="Photo"
-          height={1920}
-          width={1080}
-          className={"w-full h-full object-cover"}
-        />
-      </motion.div>
-
-      {/* Selected image */}
-      <div
-        className={"absolute pointer-events-none inset-0 z-20"}
-        style={MASK_ANIMATION}
-      >
-        <Image
-          src={images[selectedImage]}
-          alt="Photo"
-          priority={true}
-          height={1920}
-          width={1080}
-          className={"w-full h-full object-cover"}
-        />
-      </div>
+    {/* Selected image */}
+    <div
+      className={"absolute pointer-events-none inset-0 z-20"}
+      style={MASK_ANIMATION}
+    >
+      <Image
+        src={images[selectedImage]}
+        alt="Photo"
+        priority={true}
+        height={1920}
+        width={1080}
+        className={"w-full h-full object-cover"}
+      />
     </div>
 
     {/* Thumbnails */}
