@@ -49,10 +49,10 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     {/* Overlay */}
     <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
 
-    {/* Previous image */}
+    {/* Selected image */}
     <div className={"absolute pointer-events-none inset-0 z-10"}>
       <Image
-        src={images[2]}
+        src={images[selectedImage]}
         alt="Photo"
         height={1920}
         width={1080}
@@ -60,20 +60,21 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       />
     </div>
 
-    {/* Selected image */}
-    <div
+    {/* Mask image */}
+    <motion.div
+      key={selectedImage}
       className={"absolute pointer-events-none inset-0 z-20"}
       style={MASK_ANIMATION}
     >
       <Image
-        src={images[selectedImage]}
+        src={images[lastSelectedImage]}
         alt="Photo"
         priority={true}
         height={1920}
         width={1080}
         className={"w-full h-full object-cover"}
       />
-    </div>
+    </motion.div>
 
     {/* Thumbnails */}
     {images.map((src, index) => {
