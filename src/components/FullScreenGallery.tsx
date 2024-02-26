@@ -14,6 +14,15 @@ const THUMB_GAP = 30;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 
+const MASK_ANIMATION = {
+  WebkitMask: 'url(/images/mask-sprite.png)',
+  mask: 'url(/images/mask-sprite.png)',
+  WebkitMaskSize: '8400% 100%',
+  maskSize: '8400% 100%',
+  WebkitAnimation: 'mask-play 1.4s steps(83) forwards',
+  animation: 'mask-play 1.4s steps(83) forwards'
+}
+
 const getThumbX = (index: number, selectedImage: number) => {
   if (index > selectedImage) {
     return (index - 1) * THUMB_WIDTH + index * THUMB_GAP;
@@ -55,7 +64,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
       {/* Selected image */}
       <div
-        className={"mask-hide absolute pointer-events-none inset-0 z-20"}
+        className={"absolute pointer-events-none inset-0 z-20"}
+        style={MASK_ANIMATION}
       >
         <Image
           src={images[selectedImage]}
