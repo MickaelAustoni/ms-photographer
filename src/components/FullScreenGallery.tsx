@@ -45,6 +45,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     setSelectedImage(index);
   };
 
+  console.log(lastSelectedImage === -1);
+
   return <>
     {/* Overlay */}
     <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
@@ -57,6 +59,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         height={1920}
         width={1080}
         className={"w-full h-full object-cover"}
+        priority={true}
       />
     </div>
 
