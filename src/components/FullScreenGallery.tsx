@@ -109,6 +109,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         className="absolute z-50"
         animate={selectedImage === index ? "selected" : "thumb"}
         initial={false}
+        whileHover={{ scale: 1.05 }}
         style={{
           width: THUMB_WIDTH,
           height: THUMB_HEIGHT,
