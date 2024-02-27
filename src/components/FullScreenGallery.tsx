@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { CSSProperties, useState } from "react";
+import { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import useWindowSize from "@/hooks/useWindowSize";
 import { PointerEvent } from "react";
