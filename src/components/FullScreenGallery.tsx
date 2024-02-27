@@ -14,6 +14,8 @@ const ANIMATION_DURATION = 0.5;
 const THUMB_GAP = 10;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
+const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
+const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
 
 const getThumbX = (index: number, selectedImage: number) => {
   if (index > selectedImage) {
@@ -70,9 +72,9 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       className={"absolute inset-0 z-10"}
       onPointerMove={handlePointerMove}
       style={{
-        scale: 1.1,
         y: smoothY,
         x: smoothX,
+        scale: 1.1,
       }}
     >
       <ImageFull src={images[selectedImage]} />
@@ -83,15 +85,15 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       key={selectedImage}
       className={"absolute pointer-events-none inset-0 z-20"}
       style={{
-        WebkitMask: "url(/images/mask-sprite.png)",
-        mask: "url(/images/mask-sprite.png)",
+        x: smoothX,
+        y: smoothY,
+        WebkitMask: SPRITE_MASK_URL,
+        mask: SPRITE_MASK_URL,
         WebkitMaskSize: "8400% 100%",
         maskSize: "8400% 100%",
         WebkitAnimation: "sprite-play 1.4s steps(83) forwards",
         animation: "sprite-play 1.4s steps(83) forwards",
         scale: 1.1,
-        x: smoothX,
-        y: smoothY,
       }}
     >
       <ImageFull src={images[lastSelectedImage]} />
@@ -137,8 +139,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           onClick={handleClick(index)}
           style={{
             ...(selectedImage !== index && {
-              maskImage: "url(/images/mask-thumb.png)",
-              WebkitMaskImage: "url(/images/mask-thumb.png)",
+              maskImage: THUMB_MASK_URL,
+              WebkitMaskImage: THUMB_MASK_URL,
               maskSize: "100% 100%",
             }),
           }}
