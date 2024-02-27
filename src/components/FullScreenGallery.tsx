@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { CSSProperties, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import useWindowSize from "@/hooks/useWindowSize";
 import { PointerEvent } from "react";
@@ -10,12 +10,13 @@ interface FullScreenGalleryProps {
   images: string[];
 }
 
-const ANIMATION_DURATION = 0.5;
+const THUMB_ANIMATION_DURATION = 0.5;
 const THUMB_GAP = 10;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
-const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
 const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
+const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
+const SPRITE_ANIMATION_DURATION = 1.2;
 
 const getThumbX = (index: number, selectedImage: number) => {
   if (index > selectedImage) {
@@ -33,7 +34,7 @@ const parallaxTransformer = (value: number) => {
   return -Math.abs(value / 100)
 }
 
-const ImageFull = ({ src }: { src: string }) => {
+const ImageBackground = ({ src }: { src: string}) => {
   return <Image
     src={src}
     alt="Photo"
@@ -47,7 +48,7 @@ const ImageFull = ({ src }: { src: string }) => {
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
-  const [lastSelectedImage, setLastSelectedImage] = useState(0);
+  const [lastSelectedImage, setLastSelectedImage] = useState(-1);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
@@ -77,7 +78,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         scale: 1.1,
       }}
     >
-      <ImageFull src={images[selectedImage]} />
+      <ImageBackground src={images[selectedImage]} />
     </motion.div>
 
     {/* Mask image with */}
@@ -91,12 +92,12 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         mask: SPRITE_MASK_URL,
         WebkitMaskSize: "8400% 100%",
         maskSize: "8400% 100%",
-        WebkitAnimation: "sprite-play 1.4s steps(83) forwards",
-        animation: "sprite-play 1.4s steps(83) forwards",
+        WebkitAnimation: `forwards sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
+        animation: "sprite-play 1s steps(83) forwards",
         scale: 1.1,
       }}
     >
-      <ImageFull src={images[lastSelectedImage]} />
+      <ImageBackground src={lastSelectedImage === -1 ? images[images.length - 1] : images[lastSelectedImage]} />
     </motion.div>
 
     {/* Thumbnails */}
@@ -127,7 +128,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           },
         }}
         transition={{
-          duration: ANIMATION_DURATION
+          duration: THUMB_ANIMATION_DURATION
         }}
       >
         <Image
