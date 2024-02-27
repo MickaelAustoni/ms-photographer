@@ -47,7 +47,7 @@ h1 {
   }
 }
 
-@keyframes mask-play {
+@keyframes sprite-play {
   from {
     -webkit-mask-position: 0 0;
     mask-position: 0 0;
