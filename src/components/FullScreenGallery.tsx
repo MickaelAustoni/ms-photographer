@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import useWindowSize from "@/hooks/useWindowSize";
+import { PointerEvent } from "react";
 
 interface FullScreenGalleryProps {
   images: string[];
@@ -13,15 +14,6 @@ const ANIMATION_DURATION = 0.5;
 const THUMB_GAP = 10;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
-
-const MASK_ANIMATION = {
-  WebkitMask: "url(/images/mask-sprite.png)",
-  mask: "url(/images/mask-sprite.png)",
-  WebkitMaskSize: "8400% 100%",
-  maskSize: "8400% 100%",
-  WebkitAnimation: "sprite-play 1.4s steps(83) forwards",
-  animation: "sprite-play 1.4s steps(83) forwards"
-}
 
 const getThumbX = (index: number, selectedImage: number) => {
   if (index > selectedImage) {
@@ -35,46 +27,74 @@ const getThumbX = (index: number, selectedImage: number) => {
   return index * THUMB_WIDTH + index * THUMB_GAP;
 };
 
+const parallaxTransformer = (value: number) => {
+  return -Math.abs(value / 100)
+}
+
+const ImageFull = ({ src }: { src: string }) => {
+  return <Image
+    src={src}
+    alt="Photo"
+    height={1920}
+    width={1080}
+    className={"w-full h-full object-cover"}
+    priority={true}
+  />
+}
+
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(0);
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
+  const smoothY = useSpring(useTransform(mouseY, parallaxTransformer));
 
   const handleClick = (index: number) => () => {
     setLastSelectedImage(selectedImage);
     setSelectedImage(index);
   };
 
+  const handlePointerMove = (e: PointerEvent) => {
+    mouseX.set(e.clientX);
+    mouseY.set(e.clientY);
+  }
+
   return <>
     {/* Overlay */}
     <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"} />
 
     {/* Selected image */}
-    <div className={"absolute pointer-events-none inset-0 z-10"}>
-      <Image
-        src={images[selectedImage]}
-        alt="Photo"
-        height={1920}
-        width={1080}
-        className={"w-full h-full object-cover"}
-        priority={true}
-      />
-    </div>
+    <motion.div
+      className={"absolute inset-0 z-10"}
+      onPointerMove={handlePointerMove}
+      style={{
+        scale: 1.1,
+        y: smoothY,
+        x: smoothX,
+      }}
+    >
+      <ImageFull src={images[selectedImage]} />
+    </motion.div>
 
-    {/* Mask image */}
+    {/* Mask image with */}
     <motion.div
       key={selectedImage}
       className={"absolute pointer-events-none inset-0 z-20"}
-      style={MASK_ANIMATION}
+      style={{
+        WebkitMask: "url(/images/mask-sprite.png)",
+        mask: "url(/images/mask-sprite.png)",
+        WebkitMaskSize: "8400% 100%",
+        maskSize: "8400% 100%",
+        WebkitAnimation: "sprite-play 1.4s steps(83) forwards",
+        animation: "sprite-play 1.4s steps(83) forwards",
+        scale: 1.1,
+        x: smoothX,
+        y: smoothY,
+      }}
     >
-      <Image
-        src={images[lastSelectedImage]}
-        alt="Photo"
-        priority={true}
-        height={1920}
-        width={1080}
-        className={"w-full h-full object-cover"}
-      />
+      <ImageFull src={images[lastSelectedImage]} />
     </motion.div>
 
     {/* Thumbnails */}
