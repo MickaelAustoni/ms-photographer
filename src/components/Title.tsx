@@ -2,6 +2,7 @@
 
 import { motion, Variants } from "framer-motion";
 
+const TITLE = "Michael Sanchez Photography";
 const LOGO_WIDTH = 400;
 const LOGO_HEIGHT = 391;
 
@@ -40,9 +41,9 @@ const TEXT_VARIANTS : Variants = {
 
 export default function Title() {
 
-
   return (
     <motion.h1
+      title={TITLE}
       className={"z-[100] indent-[-9999px] text-[0] absolute select-none justify-center items-center flex"}
       initial={{
         x: 0,
@@ -64,7 +65,7 @@ export default function Title() {
         duration: 1,
       }}
     >
-      Michael Sanchez photography
+      {TITLE}
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         width={"100%"}
