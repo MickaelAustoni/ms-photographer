@@ -43,7 +43,7 @@ export default function Title() {
 
   return (
     <motion.h1
-      className={"z-50 absolute text-[0] select-none indent-[-9999px] w-96"}
+      className={"z-50 absolute text-[0] select-none indent-[-9999px]"}
       initial={{
         x: `calc(100vw / 2 + -50%)`,
         y: `calc(100vh / 2 + -50%)`,
