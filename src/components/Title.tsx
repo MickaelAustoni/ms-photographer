@@ -11,7 +11,7 @@ const TEXT_VARIANTS : Variants = {
     opacity: 0,
     fill: "rgba(255,255,255,0)"
   },
-  visible: (i : number, a) => {
+  visible: (i : number) => {
     const delay =  (i + 2) * (0.1);
 
     return {
