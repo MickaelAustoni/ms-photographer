@@ -150,6 +150,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
                 maskImage: THUMB_MASK_URL,
                 WebkitMaskImage: THUMB_MASK_URL,
                 maskSize: "100% 100%",
+                WebkitMaskSize: "100% 100%",
               }),
             }}
           />
