@@ -88,7 +88,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     {/* Thumbnails */}
     <div
-      className={"w-full overflow-x-auto absolute bottom-0 left-0 right-0 flex flex-row z-40 before:content-[attr(before)] before:h-full before:z-50 before:pointer-events-none before:right-0 before:fixed before:w-2/6 before:bg-gradient-to-r before:from-transparent before:to-black"}
+      className={"w-full overflow-x-auto absolute bottom-0 left-0 right-0 flex flex-row z-40 before:h-full before:z-50 before:pointer-events-none before:right-0 before:fixed before:w-64 before:bg-gradient-to-r before:from-transparent before:to-black"}
       style={{ paddingRight: THUMB_WIDTH }}
     >
       {images.map((src, index) => {
