@@ -15,7 +15,6 @@ const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
 const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
-const OVERFLOW_MASK_URL = "url(/images/mask-overflow.png)";
 const SPRITE_ANIMATION_DURATION = 1.2;
 
 const parallaxTransformer = (value: number) => {
@@ -89,18 +88,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     {/* Thumbnails */}
     <div
-      className={"w-full overflow-x-auto absolute bottom-0 left-0 right-0 flex flex-row z-40"}
-      style={{
-        paddingRight: THUMB_WIDTH,
-        maskImage: OVERFLOW_MASK_URL,
-        WebkitMaskImage: OVERFLOW_MASK_URL,
-        maskPosition: "right",
-        WebkitMaskPosition: "left",
-        maskSize: "100% 165px",
-        WebkitMaskSize: "100% 165px",
-        maskRepeat: "no-repeat",
-        WebkitMaskRepeat: "no-repeat",
-    }}
+      className={"w-full overflow-x-auto absolute bottom-0 left-0 right-0 flex flex-row z-40 before:content-[attr(before)] before:h-full before:z-50 before:pointer-events-none before:right-0 before:fixed before:w-2/6 before:bg-gradient-to-r before:from-transparent before:to-black"}
+      style={{ paddingRight: THUMB_WIDTH }}
     >
       {images.map((src, index) => {
         return <motion.div

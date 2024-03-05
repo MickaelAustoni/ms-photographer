@@ -8,7 +8,10 @@ const config: Config = {
   ],
   theme: {
     colors: {
+      black: "#000",
       primary: "#ceff00",
+      white: "#fff",
+      transparent: "transparent",
     },
     extend: {
       backgroundImage: {
