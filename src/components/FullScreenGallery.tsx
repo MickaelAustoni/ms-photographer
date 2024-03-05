@@ -22,6 +22,18 @@ const parallaxTransformer = (value: number) => {
   return -Math.abs(value / 100)
 }
 
+const getVariant = (index: number, selectedImage: number, intro: boolean) => {
+  if(index === 0 && intro) {
+    return "selected";
+  }
+
+  if(intro) {
+    return "intro";
+  }
+
+  return selectedImage === index ? "selected" : "thumb"
+}
+
 const ImageBackground = ({ src }: { src: string}) => {
   return <Image
     src={src}
@@ -36,6 +48,7 @@ const ImageBackground = ({ src }: { src: string}) => {
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(-1);
+  const [intro, setIntro] = useState(true);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
@@ -49,6 +62,12 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
   const handlePointerMove = (e: PointerEvent) => {
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
+  }
+
+  const handleOnAnimationComplete = (variantName: string)=> {
+    if (variantName === "intro") {
+      setIntro(false);
+    }
   }
 
   return <>
@@ -101,15 +120,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
       {images.map((src, index) => {
         return <motion.div
           key={index}
-          animate={selectedImage === index ? "selected" : "thumb"}
-          initial={false}
-          whileHover={{
-            scale: 1.05,
-            transition:{
-              duration: 0.3,
-              type: "spring",
-            }
-          }}
+          animate={getVariant(index, selectedImage, intro)}
+          onAnimationComplete={handleOnAnimationComplete}
           style={{
             width: THUMB_WIDTH,
             height: THUMB_HEIGHT,
@@ -117,15 +129,33 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
             flexShrink: 0,
             minWidth: 0,
           }}
+          initial={{
+            opacity: 0,
+            x: 20,
+            scale: 0.6,
+          }}
           variants={{
+            intro: {
+              opacity: 1,
+              x: 0,
+              scale: 1,
+              transition: {
+                delay: 5 + index * 0.1,
+                scale: {
+                  duration: 0.1,
+                }
+              },
+            },
             thumb: {
               opacity: 1,
               width: THUMB_WIDTH,
               height: THUMB_HEIGHT,
               marginBottom: THUMB_GAP,
               scale: 1,
+              x: 0,
             },
             selected: {
+              x: 0,
               opacity: 0,
               marginBottom: 0,
               width: 0,
@@ -136,11 +166,18 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
           transition={{
             duration: THUMB_ANIMATION_DURATION
           }}
+          whileHover={{
+            scale: 1.05,
+            transition:{
+              duration: 0.3,
+              type: "spring",
+            }
+          }}
         >
           <Image
             src={src}
             alt="Thumbnail"
-            priority={index === 0}
+            priority={index === 0 || index === 1}
             height={1920}
             width={1080}
             className={"cursor-pointer w-full h-full object-cover"}
