@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import useWindowSize from "@/hooks/useWindowSize";
 import { PointerEvent } from "react";
 
 interface FullScreenGalleryProps {
@@ -11,24 +10,12 @@ interface FullScreenGalleryProps {
 }
 
 const THUMB_ANIMATION_DURATION = 0.5;
-const THUMB_GAP = 10;
+const THUMB_GAP = 15;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
 const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
 const SPRITE_ANIMATION_DURATION = 1.2;
-
-const getThumbX = (index: number, selectedImage: number) => {
-  if (index > selectedImage) {
-    return (index - 1) * THUMB_WIDTH + index * THUMB_GAP;
-  }
-
-  if (index < selectedImage) {
-    return index * THUMB_WIDTH + (index + 1) * THUMB_GAP;
-  }
-
-  return index * THUMB_WIDTH + index * THUMB_GAP;
-};
 
 const parallaxTransformer = (value: number) => {
   return -Math.abs(value / 100)
@@ -46,7 +33,6 @@ const ImageBackground = ({ src }: { src: string}) => {
 }
 
 export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
-  const { height } = useWindowSize();
   const [selectedImage, setSelectedImage] = useState(0);
   const [lastSelectedImage, setLastSelectedImage] = useState(-1);
   const mouseX = useMotionValue(0);
@@ -101,53 +87,63 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     </motion.div>
 
     {/* Thumbnails */}
-    {images.map((src, index) => {
-      const x = getThumbX(index, selectedImage);
-      const y = height - THUMB_HEIGHT - THUMB_GAP;
-
-      return <motion.div
-        key={index}
-        className="absolute z-50"
-        animate={selectedImage === index ? "selected" : "thumb"}
-        initial={false}
-        whileHover={{ scale: 1.05 }}
-        style={{
-          width: THUMB_WIDTH,
-          height: THUMB_HEIGHT,
-        }}
-        variants={{
-          thumb: {
-            x,
-            y,
-            opacity: 1,
-          },
-          selected: {
-            x,
-            y,
-            opacity: 0,
-          },
-        }}
-        transition={{
-          duration: THUMB_ANIMATION_DURATION
-        }}
-      >
-        <Image
-          src={src}
-          alt="Thumbnail"
-          priority={index === 0}
-          height={1920}
-          width={1080}
-          className={"cursor-pointer w-full h-full object-cover"}
-          onClick={handleClick(index)}
-          style={{
-            ...(selectedImage !== index && {
-              maskImage: THUMB_MASK_URL,
-              WebkitMaskImage: THUMB_MASK_URL,
-              maskSize: "100% 100%",
-            }),
+    <div
+      className={"w-full overflow-x-auto absolute bottom-0 left-0 right-0 flex flex-row z-40"}
+      style={{ paddingRight: THUMB_GAP }}
+    >
+      {images.map((src, index) => {
+        return <motion.div
+          key={index}
+          animate={selectedImage === index ? "selected" : "thumb"}
+          initial={false}
+          whileHover={{
+            scale: 1.05,
+            transition:{
+              duration: 0.3,
+              type: "spring",
+            }
           }}
-        />
-      </motion.div>
-    })}
+          style={{
+            width: THUMB_WIDTH,
+            height: THUMB_HEIGHT,
+            marginBottom: THUMB_GAP,
+            flexShrink: 0,
+            minWidth: 0,
+          }}
+          variants={{
+            thumb: {
+              opacity: 1,
+              width: THUMB_WIDTH,
+              marginLeft: THUMB_GAP,
+            },
+            selected: {
+              opacity: 0,
+              marginLeft: 0,
+              width: 0,
+            },
+          }}
+          transition={{
+            duration: THUMB_ANIMATION_DURATION
+          }}
+        >
+          <Image
+            src={src}
+            alt="Thumbnail"
+            priority={index === 0}
+            height={1920}
+            width={1080}
+            className={"cursor-pointer w-full h-full object-cover"}
+            onClick={handleClick(index)}
+            style={{
+              ...(selectedImage !== index && {
+                maskImage: THUMB_MASK_URL,
+                WebkitMaskImage: THUMB_MASK_URL,
+                maskSize: "100% 100%",
+              }),
+            }}
+          />
+        </motion.div>
+      })}
+    </div>
   </>
 }
