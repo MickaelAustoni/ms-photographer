@@ -1,12 +1,14 @@
 import FullScreenGallery from "@/components/FullScreenGallery";
 import Title from "@/components/Title";
 import Copyright from "@/components/Copyright";
+import Menu from "@/components/Menu";
 
 
 export default function Home() {
   return (
     <main className={"overflow-hidden w-full h-full"}>
       <Title />
+      <Menu />
       <FullScreenGallery images={[
         "/images/gallery/1.jpg",
         "/images/gallery/2.jpg",
