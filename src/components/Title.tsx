@@ -57,7 +57,7 @@ export default function Title() {
         y: 0,
         height: "100%",
         width: "100%",
-        backgroundColor: "#000",
+        backgroundColor: "rgba(0,0,0,1)",
       }}
       animate={{
         x: 20,
@@ -70,6 +70,10 @@ export default function Title() {
         delay: 4.2,
         type: "spring",
         duration: 1,
+        backgroundColor: {
+          delay: 4,
+          duration: 0.35
+        }
       }}
     >
       {TITLE}
