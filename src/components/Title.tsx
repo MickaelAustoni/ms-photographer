@@ -1,6 +1,7 @@
 "use client";
 
 import { motion, Variants } from "framer-motion";
+import { useState } from "react";
 
 const TITLE = "Michael Sanchez Photography";
 const LOGO_WIDTH = 400;
@@ -40,11 +41,15 @@ const TEXT_VARIANTS : Variants = {
 };
 
 export default function Title() {
+  const [isAnimating, setIsAnimating] = useState(true);
 
   return (
     <motion.h1
-      title={TITLE}
+      title={isAnimating ? undefined : TITLE}
       className={"z-[100] indent-[-9999px] text-[0] absolute select-none justify-center items-center flex"}
+      onAnimationComplete={(name) => {
+        setIsAnimating(false);
+      }}
       initial={{
         x: 0,
         y: 0,
