@@ -43,13 +43,15 @@ const TEXT_VARIANTS : Variants = {
 export default function Title() {
   const [isAnimating, setIsAnimating] = useState(true);
 
+  const handleAnimationComplete = () => {
+    setIsAnimating(false);
+  }
+
   return (
     <motion.h1
       title={isAnimating ? undefined : TITLE}
       className={"z-[100] indent-[-9999px] text-[0] absolute select-none justify-center items-center flex"}
-      onAnimationComplete={(name) => {
-        setIsAnimating(false);
-      }}
+      onAnimationComplete={handleAnimationComplete}
       initial={{
         x: 0,
         y: 0,
