@@ -23,7 +23,14 @@ const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean })
         }
       }}
       whileHover={{
-        opacity: 0.8
+        opacity: 0.8,
+        scale: 1.2,
+        transition: {
+          scale: {
+            type: "spring",
+            duration: 0.1
+          }
+        }
       }}
     >
       <motion.svg
