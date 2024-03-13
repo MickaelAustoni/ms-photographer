@@ -32,10 +32,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
         className="w-12 h-12 p-3"
       >
         <motion.g
-          animate={isOpen ? {x: 0} : undefined}
-          initial={{
-            x: 10
-          }}
+          animate={isOpen ? { x: 0 } : undefined}
+          initial={{ x: 10 }}
           variants={isOpen ? undefined : {
             hover: {
               x: 5
@@ -63,10 +61,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
           />
         </motion.g>
         <motion.g
-          animate={isOpen ? {x: 0} : undefined}
-          initial={{
-            x: 5
-          }}
+          animate={isOpen ? { x: 0 } : undefined}
+          initial={{ x: 5 }}
           variants={isOpen ? undefined : {
             hover: {
               x: 10
@@ -92,10 +88,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
           />
         </motion.g>
         <motion.g
-          animate={isOpen ? {x: 0} : undefined}
-          initial={{
-            x: 15
-          }}
+          animate={isOpen ? { x: 0 } : undefined}
+          initial={{ x: 15 }}
           variants={isOpen ? undefined : {
             hover: {
               x: 0
