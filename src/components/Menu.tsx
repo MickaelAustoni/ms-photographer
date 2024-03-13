@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren, useState } from "react";
 
-const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean }) => {
+const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => {
   return (
     <motion.button
-      className={"absolute right-6 top-6 p-5 z-[300]"}
+      className={"absolute right-6 top-6 z-[300]"}
       onClick={onClick}
       initial={{
         opacity: 0,
@@ -22,24 +22,26 @@ const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean })
           duration: 0.5
         }
       }}
-      whileHover={{
-        opacity: 0.8,
-        scale: 1.2,
-        transition: {
-          scale: {
-            type: "spring",
-            duration: 0.1
-          }
-        }
-      }}
     >
       <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         width="25"
         height="24.9859"
         viewBox="0 0 25 24.9859"
+        whileHover="hover"
+        className="w-12 h-12 p-3"
       >
-        <g>
+        <motion.g
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{
+            x: 10
+          }}
+          variants={isOpen ? undefined : {
+            hover: {
+              x: 5
+            }
+          }}
+        >
           <motion.line
             y1="3"
             x2="25"
@@ -52,17 +54,25 @@ const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean })
             variants={{
               closed: {
                 rotate: 0,
-                pathLength: 0.6
               },
               open: {
                 rotate: 45,
                 y: 9.5,
-                pathLength: 1
               }
             }}
           />
-        </g>
-        <g>
+        </motion.g>
+        <motion.g
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{
+            x: 5
+          }}
+          variants={isOpen ? undefined : {
+            hover: {
+              x: 10
+            }
+          }}
+        >
           <motion.line
             y1="12.493"
             x2="25" y2="12.493"
@@ -80,8 +90,18 @@ const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean })
               }
             }}
           />
-        </g>
-        <g>
+        </motion.g>
+        <motion.g
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{
+            x: 15
+          }}
+          variants={isOpen ? undefined : {
+            hover: {
+              x: 0
+            }
+          }}
+        >
           <motion.line
             y1="21.9859"
             x2="25"
@@ -94,16 +114,14 @@ const Button = ({ onClick, isOpen } : { onClick: () => void; isOpen : boolean })
             variants={{
               closed: {
                 rotate: 0,
-                pathLength: 0.8
               },
               open: {
                 rotate: -45,
                 y: -9.5,
-                pathLength: 1
               }
             }}
           />
-        </g>
+        </motion.g>
       </motion.svg>
     </motion.button>
   )
@@ -118,7 +136,7 @@ export default function Menu({children}: PropsWithChildren) {
 
   return (
     <>
-      <Button onClick={handleOnClickBurger} isOpen={isOpen} />
+      <Button onClick={handleOnClickBurger} isOpen={isOpen}/>
       <motion.div
         className={"w-full h-full"}
         animate={isOpen ? "open" : "closed"}
@@ -127,7 +145,7 @@ export default function Menu({children}: PropsWithChildren) {
             filter: "blur(0px)"
           },
           open: {
-            filter: "blur(8px)"
+            filter: "blur(10px)"
           }
         }}
       >
