@@ -3,7 +3,6 @@ import Title from "@/components/DataDisplay/Title";
 import Copyright from "@/components/DataDisplay/Copyright";
 import MenuContainer from "@/components/Menu/MenuContainer";
 
-
 export default function Home() {
   return (
     <main className={"overflow-hidden w-full h-full"}>
