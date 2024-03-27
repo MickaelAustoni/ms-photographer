@@ -1,13 +1,13 @@
-import FullScreenGallery from "@/components/FullScreenGallery";
-import Title from "@/components/Title";
-import Copyright from "@/components/Copyright";
-import Menu from "@/components/Menu";
+import FullScreenGallery from "@/components/DataDisplay/FullScreenGallery";
+import Title from "@/components/DataDisplay/Title";
+import Copyright from "@/components/DataDisplay/Copyright";
+import MenuContainer from "@/components/Menu/MenuContainer";
 
 
 export default function Home() {
   return (
     <main className={"overflow-hidden w-full h-full"}>
-      <Menu>
+      <MenuContainer>
         <Title />
         <FullScreenGallery images={[
           "/images/gallery/1.jpg",
@@ -21,7 +21,7 @@ export default function Home() {
           "/images/gallery/9.jpg"
         ]} />
         <Copyright />
-      </Menu>
+      </MenuContainer>
     </main>
   );
 }

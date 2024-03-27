@@ -1,9 +1,13 @@
-"use client";
-
 import { motion } from "framer-motion";
-import { PropsWithChildren, useState } from "react";
 
-const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => {
+
+interface BurgerButtonProps {
+  onClick: () => void;
+  isOpen: boolean;
+}
+
+export default function ButtonMenu({onClick, isOpen}: BurgerButtonProps) {
+
   return (
     <motion.button
       className={"absolute right-6 top-6 z-[300]"}
@@ -32,8 +36,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
         className="w-12 h-12 p-3"
       >
         <motion.g
-          animate={isOpen ? { x: 0 } : undefined}
-          initial={{ x: 10 }}
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{x: 10}}
           variants={isOpen ? undefined : {
             hover: {
               x: 5
@@ -61,8 +65,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
           />
         </motion.g>
         <motion.g
-          animate={isOpen ? { x: 0 } : undefined}
-          initial={{ x: 5 }}
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{x: 5}}
           variants={isOpen ? undefined : {
             hover: {
               x: 10
@@ -88,8 +92,8 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
           />
         </motion.g>
         <motion.g
-          animate={isOpen ? { x: 0 } : undefined}
-          initial={{ x: 15 }}
+          animate={isOpen ? {x: 0} : undefined}
+          initial={{x: 15}}
           variants={isOpen ? undefined : {
             hover: {
               x: 0
@@ -118,33 +122,5 @@ const Button = ({onClick, isOpen}: { onClick: () => void; isOpen: boolean }) => 
         </motion.g>
       </motion.svg>
     </motion.button>
-  )
-}
-
-export default function Menu({children}: PropsWithChildren) {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOnClickBurger = () => {
-    setIsOpen((prevState) => !prevState);
-  }
-
-  return (
-    <>
-      <Button onClick={handleOnClickBurger} isOpen={isOpen}/>
-      <motion.div
-        className={"w-full h-full"}
-        animate={isOpen ? "open" : "closed"}
-        variants={{
-          closed: {
-            filter: "blur(0px)"
-          },
-          open: {
-            filter: "blur(10px)"
-          }
-        }}
-      >
-        {children}
-      </motion.div>
-    </>
   );
 }
