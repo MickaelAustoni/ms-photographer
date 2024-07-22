@@ -9,7 +9,7 @@ export default function ButtonMenu({onClick, isOpen}: BurgerButtonProps) {
 
   return (
     <motion.button
-      className={"absolute right-6 top-6 z-[300]"}
+      className={"absolute right-6 bottom-6 z-[300]"}
       onClick={onClick}
       initial={{
         opacity: 0,
