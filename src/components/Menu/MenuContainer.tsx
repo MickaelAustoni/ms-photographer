@@ -12,10 +12,14 @@ export default function MenuContainer({children}: PropsWithChildren) {
     setIsOpen((prevState) => !prevState);
   }
 
+  const handleClose = () => {
+    setIsOpen(false);
+  }
+
   return (
     <>
       <ButtonMenu onClick={handleOnClickBurger} isOpen={isOpen}/>
-      <NavMenu isOpen={isOpen}/>
+      <NavMenu isOpen={isOpen} onClose={handleClose}/>
       <motion.div
         className={`w-full h-full ${isOpen ? "pointer-events-none" : "pointer-events-auto"}`}
         animate={isOpen ? "open" : "closed"}

@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import  { Metadata } from "next";
 import { Montserrat } from "next/font/google";
 import "@/styles/globals.css";
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
+import Gallery from "@/components/Layout/Gallery";
 
 const inter = Montserrat({
   weight: ["100","400", "900"],
@@ -13,14 +14,12 @@ export const metadata: Metadata = {
   description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) {
+export default function RootLayout({ children }: PropsWithChildren) {
   return (
     <html lang="fr">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <Gallery>{children}</Gallery>
+      </body>
     </html>
   );
 }

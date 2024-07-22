@@ -1,6 +1,5 @@
 import { motion } from "framer-motion";
 
-
 interface BurgerButtonProps {
   onClick: () => void;
   isOpen: boolean;
