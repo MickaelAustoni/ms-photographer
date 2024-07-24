@@ -108,7 +108,7 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     {/* Thumbnails */}
     <div
-      className={"h-4/5 items-center overflow-auto absolute top-0 pt-20 pb-10 right-3 pr-3 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
+      className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-3 pr-3 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
       style={{
         height: THUMB_HEIGHT * 4,
         maskImage: THUMB_OVERFLOW_MASK_URL,
