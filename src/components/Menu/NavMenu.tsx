@@ -28,12 +28,10 @@ const variants = {
 } as const;
 
 export default function NavMenu({isOpen, onClose}: NavMenuProps) {
-  if(!isOpen){
-    return null;
-  }
-
   return (
-    <nav className={"absolute right-9 top-24 text-right z-[300]"}>
+    <nav className={"absolute right-9 top-24 text-right z-[300]"} style={{
+      display: isOpen ? "block" : "none"
+    }}>
       <motion.ul
         initial={"closed"}
         animate={isOpen ? "open" : "closed"}
