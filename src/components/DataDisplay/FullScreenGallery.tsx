@@ -98,8 +98,8 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
         mask: SPRITE_MASK_URL,
         WebkitMaskSize: "8400% 100%",
         maskSize: "8400% 100%",
-        WebkitAnimation: `forwards sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
-        animation: "sprite-play 1s steps(83) forwards",
+        WebkitAnimation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
+        animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
         scale: 1.1,
       }}
     >
