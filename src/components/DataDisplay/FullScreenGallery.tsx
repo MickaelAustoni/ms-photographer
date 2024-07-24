@@ -76,8 +76,12 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
 
     {/* Selected image */}
     <motion.div
+      key={images[selectedImage]}
       className={"absolute inset-0 z-10"}
       onPointerMove={handlePointerMove}
+      initial={{ opacity: 0 }}
+      animate={{opacity: 1 }}
+      transition={{ duration: 2 }}
       style={{
         y: smoothY,
         x: smoothX,
@@ -91,6 +95,9 @@ export default function FullScreenGallery({ images }: FullScreenGalleryProps) {
     <motion.div
       key={selectedImage}
       className={"absolute pointer-events-none inset-0 z-20"}
+      initial={{ opacity: 1 }}
+      animate={{opacity: 0 }}
+      transition={{ duration: 4 }}
       style={{
         x: smoothX,
         y: smoothY,
