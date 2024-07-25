@@ -23,10 +23,11 @@ const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
 const THUMB_OVERFLOW_MASK_URL = "url(/images/mask-thumb-overflow.png)";
 const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
 const SPRITE_ANIMATION_DURATION = 1.2;
-const SELECTED_IMAGE_DURATION = 2
+const SELECTED_IMAGE_DURATION = 2;
+const PARALLAX_MULTIPLIER = 200;
 
 const parallaxTransformer = (value: number) => {
-  return -Math.abs(value / 100)
+  return -Math.abs(value / PARALLAX_MULTIPLIER)
 }
 
 const getVariant = (index: number, selectedImage: number, intro: boolean) => {
