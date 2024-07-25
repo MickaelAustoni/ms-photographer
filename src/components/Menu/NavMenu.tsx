@@ -41,10 +41,13 @@ export default function NavMenu({isOpen, onClose}: NavMenuProps) {
           <Link href="/portrait" onClick={onClose}>Portrait</Link>
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
-          <Link href="/reportage" onClick={onClose}>Reportage</Link>
+          <Link href="/event" onClick={onClose}>Événement</Link>
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
           <Link href="/mariage" onClick={onClose}>Mariage</Link>
+        </motion.li>
+        <motion.li className={"p-2 tracking-widest"} variants={variants}>
+          <Link href="/sport" onClick={onClose}>Sport</Link>
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
           <a href={"https://www.instagram.com/michael_sanchez_photographie/"} target={"_blank"} rel={"noreferrer"}>
