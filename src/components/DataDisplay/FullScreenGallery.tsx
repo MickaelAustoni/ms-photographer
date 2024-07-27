@@ -139,8 +139,10 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       {images.map((src, index) => {
         return <motion.div
           key={index}
+          onClick={handleClick(index)}
           animate={getVariant(index, selectedImageIndex, introContext !== undefined ? introContext : intro)}
           onAnimationComplete={handleOnAnimationComplete}
+          className={"cursor-pointer"}
           style={{
             width: THUMB_WIDTH,
             height: THUMB_HEIGHT,
@@ -199,8 +201,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             priority={index === 0 || index === 1}
             height={1920}
             width={1080}
-            className={"cursor-pointer w-full h-full object-cover"}
-            onClick={handleClick(index)}
+            className={"w-full h-full object-cover pointer-events-none"}
             style={{
               ...(selectedImageIndex !== index && {
                 maskImage: THUMB_MASK_URL,
