@@ -89,7 +89,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     {/* Selected image background */}
     <motion.div
       key={selectedImageSrc}
-      className={"absolute inset-0 z-10"}
+      className={"absolute inset-0 z-10 pointer-events-none"}
       onPointerMove={handlePointerMove}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
