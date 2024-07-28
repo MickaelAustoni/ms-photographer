@@ -138,7 +138,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     >
       {images.map((src, index) => {
         return <motion.div
-          key={index}
+          key={src + index}
           onClick={handleClick(index)}
           animate={getVariant(index, selectedImageIndex, introContext !== undefined ? introContext : intro)}
           onAnimationComplete={handleOnAnimationComplete}
