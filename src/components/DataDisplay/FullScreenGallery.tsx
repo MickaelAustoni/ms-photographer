@@ -19,9 +19,9 @@ interface FullScreenGalleryProps {
 const THUMB_GAP = 15;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
-const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
-const THUMB_OVERFLOW_MASK_URL = "url(/images/mask-thumb-overflow.png)";
-const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
+const THUMB_MASK_URL = "url(/images/mask/mask-thumb.webp)";
+const THUMB_OVERFLOW_MASK_URL = "url(/images/mask/mask-thumb-overflow.webp)";
+const SPRITE_MASK_URL = "url(/images/sprite/mask-sprite-1.png)";
 const PARALLAX_MULTIPLIER = 200;
 const SELECTED_IMAGE_DURATION = 2;
 const THUMB_ANIMATION_DURATION = 0.5;
