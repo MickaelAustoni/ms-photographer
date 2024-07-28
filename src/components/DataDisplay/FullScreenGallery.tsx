@@ -80,7 +80,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     }
   }
 
-
   return (
     <motion.div onPointerMove={handlePointerMove}>
       {/* Overlay dot */}
