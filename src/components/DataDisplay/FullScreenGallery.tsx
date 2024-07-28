@@ -154,7 +154,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           style={{
             opacity: indicatorOpacity,
           }}>
-          <ScrollIndicator style={{marginTop: "10%"}}/>
+          <ScrollIndicator style={{ marginTop: "10%" }} className={"-translate-x-1/2 left-1/2"}/>
         </motion.div>
 
         <div
