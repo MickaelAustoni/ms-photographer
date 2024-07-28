@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { Context, createContext, useContext, useEffect, useState } from "react";
+import { Context, createContext, useContext, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { PointerEvent } from "react";
 
