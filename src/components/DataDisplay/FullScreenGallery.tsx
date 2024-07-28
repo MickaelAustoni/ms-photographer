@@ -19,7 +19,8 @@ const ContextFallback = createContext<{
   setIntro: (bool: boolean) => void;
 }>({
   intro: true,
-  setIntro: (bool: boolean) => {},
+  setIntro: (bool: boolean) => {
+  },
 });
 
 interface FullScreenGalleryProps {
@@ -119,7 +120,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
     const unsubscribeScrollYProgressThumbContainer = scrollYProgressThumbContainer.on("change", (scroll) => {
       if (scroll >= 1) {
-        console.log("scroll", scroll)
         setScrollIndicator(false);
       }
     });
@@ -154,15 +154,9 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       <motion.div
         key={selectedImageIndex}
         className={"absolute pointer-events-none inset-0 z-20"}
-        initial={{
-          opacity: 1
-        }}
-        animate={{
-          opacity: 0
-        }}
-        transition={{
-          duration: MASK_IMAGE_TRANSITION_DURATION
-        }}
+        initial={{opacity: 1}}
+        animate={{opacity: 0}}
+        transition={{duration: MASK_IMAGE_TRANSITION_DURATION}}
         style={{
           x: smoothX,
           y: smoothY,
@@ -188,22 +182,12 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           {scrollIndicator && <motion.div
             animate={variant}
             variants={{
-              intro: {
-                opacity: 0,
-              },
-              normal: {
-                opacity: 1,
-              },
-              transition: {
-                opacity: 0,
-              }
+              intro: {opacity: 0},
+              normal: {opacity: 1},
+              transition: {opacity: 0}
             }}
-            transition={{
-              delay: 1
-            }}
-            style={{
-              opacity: indicatorOpacity,
-            }}>
+            transition={{delay: 1}}
+            style={{opacity: indicatorOpacity}}>
             <ScrollIndicator style={{marginTop: "10%"}} className={"-translate-x-1/2 left-1/2"}/>
           </motion.div>}
         </AnimatePresence>
