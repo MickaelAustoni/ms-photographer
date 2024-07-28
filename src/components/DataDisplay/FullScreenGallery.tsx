@@ -150,16 +150,16 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         <motion.div
           animate={variant}
           variants={{
-              intro: {
-                opacity: 0,
-              },
-              normal: {
-                opacity: 1,
-              },
-              transition: {
-                opacity: 0,
-              }
-            }}
+            intro: {
+              opacity: 0,
+            },
+            normal: {
+              opacity: 1,
+            },
+            transition: {
+              opacity: 0,
+            }
+          }}
           transition={{
             delay: 1
           }}
@@ -224,7 +224,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                   rotateX: [0, 90, 0],
                   transition: {
                     duration: TRANSITION_DURATION,
-                    delay: isSelected ? 0: 0.2,
+                    delay: isSelected ? 0 : 0.2,
                   },
                 },
                 normal: {

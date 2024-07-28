@@ -6,6 +6,7 @@ import FullScreenGalleryProvider from "@/context/FullScreenGalleryProvider";
 import MenuContainer from "@/components/Menu/MenuContainer";
 import Title from "@/components/DataDisplay/Title";
 import Copyright from "@/components/DataDisplay/Copyright";
+import FollowMouseCursorPoint from "@/components/Utils/Utils/FollowMouseCursorPoint";
 
 const inter = Montserrat({
   weight: ["100", "400", "900"],
@@ -28,6 +29,7 @@ export default function RootLayout({children}: PropsWithChildren) {
           {children}
           <Copyright/>
         </MenuContainer>
+        <FollowMouseCursorPoint/>
       </FullScreenGalleryProvider>
     </main>
     </body>
