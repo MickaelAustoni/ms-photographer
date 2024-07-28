@@ -4,11 +4,14 @@ import Image from "next/image";
 import { Context, createContext, useContext, useState } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { PointerEvent } from "react";
+import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 
-const ContextFallback = createContext({
+const ContextFallback = createContext<{
+  intro: boolean;
+  setIntro: (bool: boolean) => void;
+}>({
   intro: true,
-  setIntro: (bool: boolean) => {
-  }
+  setIntro: () => {}
 });
 
 interface FullScreenGalleryProps {
@@ -98,7 +101,8 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         key={selectedImageIndex}
         className={"absolute pointer-events-none inset-0 z-20"}
         initial={{
-          opacity: 1}}
+          opacity: 1
+        }}
         animate={{
           opacity: 0
         }}
@@ -120,108 +124,114 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         {maskSrc && <ImageBackground src={maskSrc}/>}
       </motion.div>
 
-      {/* Thumbnails */}
-      <div
-        className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-0 px-6 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
-        style={{
-          height: THUMB_HEIGHT * 4,
-          maskImage: THUMB_OVERFLOW_MASK_URL,
-          scrollSnapType: "y mandatory",
-          WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
-          maskSize: "100% 100%",
-          WebkitMaskSize: "100% 100%",
-        }}
-      >
-        {images.map((src, index) => {
-          const isSelected = selectedImageIndex === index;
-          const test = introContext !== undefined ? introContext : intro
-          const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
 
-          return <motion.div
-            key={src + index}
-            onClick={handleClick(index)}
-            animate={test ? "intro" : "thumb"}
-            onAnimationComplete={handleOnAnimationComplete}
-            className={"cursor-pointer relative"}
-            style={{
-              width: THUMB_WIDTH,
-              height: THUMB_HEIGHT,
-              marginBottom: THUMB_GAP,
-              flexShrink: 0,
-              minWidth: 0,
-            }}
-            initial={{
-              opacity: 0,
-              x: 20,
-              scale: 0.6,
-            }}
-            variants={{
-              intro: {
-                opacity: 1,
-                x: 0,
-                scale: 1,
-                transition: {
-                  delay: 5 + index * 0.1,
-                  scale: {
-                    duration: 0.1,
-                  }
-                },
-              },
-              thumb: {
-                opacity: 1,
+      {/* Thumbnails */}
+      <div className={"items-center absolute bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
+        <ScrollIndicator style={{marginTop: "15%"}}/>
+        <div
+          className={"overflow-auto px-6"}
+          style={{
+            paddingTop: "35%",
+            paddingBottom: "35%",
+            height: THUMB_HEIGHT * 5,
+            maskImage: THUMB_OVERFLOW_MASK_URL,
+            scrollSnapType: "y mandatory",
+            WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
+            maskSize: "100% 100%",
+            WebkitMaskSize: "100% 100%",
+          }}
+        >
+          {images.map((src, index) => {
+            const isSelected = selectedImageIndex === index;
+            const test = introContext !== undefined ? introContext : intro
+            const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
+
+            return <motion.div
+              key={src + index}
+              onClick={handleClick(index)}
+              animate={test ? "intro" : "thumb"}
+              onAnimationComplete={handleOnAnimationComplete}
+              className={"cursor-pointer relative"}
+              style={{
                 width: THUMB_WIDTH,
                 height: THUMB_HEIGHT,
                 marginBottom: THUMB_GAP,
-                scale: 1,
-                x: 0,
-              },
-            }}
-            transition={{
-              duration: THUMB_ANIMATION_DURATION
-            }}
-            whileHover={{
-              scale: 1.05,
-              transition: {
-                duration: 0.3,
-                type: "tween",
-              }
-            }}
-          >
-            {/* Box shadow effect */}
-            <motion.div
-              className={"inset-2 absolute"}
-              animate={isSelected ? "selected" : "unselected"}
+                flexShrink: 0,
+                minWidth: 0,
+              }}
+              initial={{
+                opacity: 0,
+                x: 20,
+                scale: 0.6,
+              }}
+              variants={{
+                intro: {
+                  opacity: 1,
+                  x: 0,
+                  scale: 1,
+                  transition: {
+                    delay: 5 + index * 0.1,
+                    scale: {
+                      duration: 0.1,
+                    }
+                  },
+                },
+                thumb: {
+                  opacity: 1,
+                  width: THUMB_WIDTH,
+                  height: THUMB_HEIGHT,
+                  marginBottom: THUMB_GAP,
+                  scale: 1,
+                  x: 0,
+                },
+              }}
               transition={{
-                duration: SELECTED_IMAGE_DURATION,
+                duration: THUMB_ANIMATION_DURATION
               }}
-              variants={
-                {
-                  unselected: {
-                    boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
-                  },
-                  selected: {
-                    boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
-                  },
+              whileHover={{
+                scale: 1.05,
+                transition: {
+                  duration: 0.3,
+                  type: "tween",
                 }
-              }
-
-            />
-            <Image
-              width={THUMB_WIDTH}
-              height={THUMB_HEIGHT}
-              src={src}
-              alt={imageName}
-              priority={index === 0 || index === 1}
-              className={"w-full h-full object-cover pointer-events-none"}
-              style={{
-                maskImage: THUMB_MASK_URL,
-                WebkitMaskImage: THUMB_MASK_URL,
-                maskSize: "100% 100%",
-                WebkitMaskSize: "100% 100%",
               }}
-            />
-          </motion.div>
-        })}
+            >
+              {/* Box shadow effect */}
+              <motion.div
+                className={"inset-2 absolute"}
+                animate={isSelected ? "selected" : "unselected"}
+                transition={{
+                  duration: SELECTED_IMAGE_DURATION,
+                }}
+                variants={
+                  {
+                    unselected: {
+                      boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
+                    },
+                    selected: {
+                      boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+                    },
+                  }
+                }
+
+              />
+              <Image
+                width={THUMB_WIDTH}
+                height={THUMB_HEIGHT}
+                src={src}
+                alt={imageName}
+                priority={index === 0 || index === 1}
+                className={"w-full h-full object-cover pointer-events-none"}
+                style={{
+                  maskImage: THUMB_MASK_URL,
+                  WebkitMaskImage: THUMB_MASK_URL,
+                  maskSize: "100% 100%",
+                  WebkitMaskSize: "100% 100%",
+                }}
+              />
+            </motion.div>
+          })}
+        </div>
       </div>
     </motion.div>
   );
