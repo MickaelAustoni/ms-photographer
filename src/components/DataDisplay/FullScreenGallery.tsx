@@ -37,7 +37,7 @@ const ImageBackground = ({src}: { src: string }) => {
     sizes="100vw"
     src={src}
     alt="Background"
-    className={"w-full h-full object-cover"}
+    className={"w-full h-full object-cover pointer-events-none"}
     priority={true}
   />
 }
@@ -71,150 +71,151 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     }
   }
 
-  return <>
-    {/* Overlay dot */}
-    <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"}/>
+  return (
+    <motion.div onPointerMove={handlePointerMove}>
+      {/* Overlay dot */}
+      <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"}/>
 
-    {/* Selected image background */}
-    <motion.div
-      key={selectedImageSrc}
-      className={"absolute inset-0 z-10 pointer-events-none"}
-      onPointerMove={handlePointerMove}
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{duration: SELECTED_IMAGE_DURATION}}
-      style={{
-        y: smoothY,
-        x: smoothX,
-        scale: 1.1,
-      }}
-    >
-      <ImageBackground src={selectedImageSrc}/>
-    </motion.div>
+      {/* Selected image background */}
+      <motion.div
+        key={selectedImageSrc}
+        className={"absolute inset-0 z-10"}
+        initial={{opacity: 0}}
+        animate={{opacity: 1}}
+        transition={{duration: SELECTED_IMAGE_DURATION}}
+        style={{
+          y: smoothY,
+          x: smoothX,
+          scale: 1.1,
+        }}
+      >
+        <ImageBackground src={selectedImageSrc}/>
+      </motion.div>
 
-    {/* Mask image */}
-    <motion.div
-      key={selectedImageIndex}
-      className={"absolute pointer-events-none inset-0 z-20"}
-      initial={{opacity: 1}}
-      animate={{opacity: 0}}
-      transition={{duration: SELECTED_IMAGE_DURATION * 2}}
-      style={{
-        x: smoothX,
-        y: smoothY,
-        WebkitMask: SPRITE_MASK_URL,
-        mask: SPRITE_MASK_URL,
-        WebkitMaskSize: "8400% 100%",
-        maskSize: "8400% 100%",
-        WebkitAnimation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
-        animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
-        scale: 1.1,
-      }}
-    >
-      {maskSrc && <ImageBackground src={maskSrc}/>}
-    </motion.div>
+      {/* Mask image */}
+      <motion.div
+        key={selectedImageIndex}
+        className={"absolute pointer-events-none inset-0 z-20"}
+        initial={{opacity: 1}}
+        animate={{opacity: 0}}
+        transition={{duration: SELECTED_IMAGE_DURATION * 2}}
+        style={{
+          x: smoothX,
+          y: smoothY,
+          WebkitMask: SPRITE_MASK_URL,
+          mask: SPRITE_MASK_URL,
+          WebkitMaskSize: "8400% 100%",
+          maskSize: "8400% 100%",
+          WebkitAnimation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
+          animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
+          scale: 1.1,
+        }}
+      >
+        {maskSrc && <ImageBackground src={maskSrc}/>}
+      </motion.div>
 
-    {/* Thumbnails */}
-    <div
-      className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-0 px-6 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
-      style={{
-        height: THUMB_HEIGHT * 4,
-        maskImage: THUMB_OVERFLOW_MASK_URL,
-        scrollSnapType: "y mandatory",
-        WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
-        maskSize: "100% 100%",
-        WebkitMaskSize: "100% 100%",
-      }}
-    >
-      {images.map((src, index) => {
-        const isSelected = selectedImageIndex === index;
-        const test = introContext !== undefined ? introContext : intro
-        const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
+      {/* Thumbnails */}
+      <div
+        className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-0 px-6 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
+        style={{
+          height: THUMB_HEIGHT * 4,
+          maskImage: THUMB_OVERFLOW_MASK_URL,
+          scrollSnapType: "y mandatory",
+          WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
+          maskSize: "100% 100%",
+          WebkitMaskSize: "100% 100%",
+        }}
+      >
+        {images.map((src, index) => {
+          const isSelected = selectedImageIndex === index;
+          const test = introContext !== undefined ? introContext : intro
+          const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
 
-        return <motion.div
-          key={src + index}
-          onClick={handleClick(index)}
-          animate={test ? "intro" : "thumb"}
-          onAnimationComplete={handleOnAnimationComplete}
-          className={"cursor-pointer relative"}
-          style={{
-            width: THUMB_WIDTH,
-            height: THUMB_HEIGHT,
-            marginBottom: THUMB_GAP,
-            flexShrink: 0,
-            minWidth: 0,
-          }}
-          initial={{
-            opacity: 0,
-            x: 20,
-            scale: 0.6,
-          }}
-          variants={{
-            intro: {
-              opacity: 1,
-              x: 0,
-              scale: 1,
-              transition: {
-                delay: 5 + index * 0.1,
-                scale: {
-                  duration: 0.1,
-                }
-              },
-            },
-            thumb: {
-              opacity: 1,
+          return <motion.div
+            key={src + index}
+            onClick={handleClick(index)}
+            animate={test ? "intro" : "thumb"}
+            onAnimationComplete={handleOnAnimationComplete}
+            className={"cursor-pointer relative"}
+            style={{
               width: THUMB_WIDTH,
               height: THUMB_HEIGHT,
               marginBottom: THUMB_GAP,
-              scale: 1,
-              x: 0,
-            },
-          }}
-          transition={{
-            duration: THUMB_ANIMATION_DURATION
-          }}
-          whileHover={{
-            scale: 1.05,
-            transition: {
-              duration: 0.3,
-              type: "tween",
-            }
-          }}
-        >
-          {/* Box shadow effect */}
-          <motion.div
-            className={"inset-2 absolute"}
-            animate={isSelected ? "selected" : "unselected"}
-            variants={
-              {
-                unselected: {
-                  boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
-                },
-                selected: {
-                  boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
-                },
-              }
-            }
-
-          />
-          <Image
-            width={THUMB_WIDTH}
-            height={THUMB_HEIGHT}
-            src={src}
-            alt={imageName}
-            priority={index === 0 || index === 1}
-            className={"w-full h-full object-cover pointer-events-none"}
-            style={{
-              maskImage: THUMB_MASK_URL,
-              WebkitMaskImage: THUMB_MASK_URL,
-              maskSize: "100% 100%",
-              WebkitMaskSize: "100% 100%",
-              filter: isSelected ? "grayscale(100%)" : "grayscale(0%)",
-              boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+              flexShrink: 0,
+              minWidth: 0,
             }}
-          />
-        </motion.div>
-      })}
-    </div>
-  </>
+            initial={{
+              opacity: 0,
+              x: 20,
+              scale: 0.6,
+            }}
+            variants={{
+              intro: {
+                opacity: 1,
+                x: 0,
+                scale: 1,
+                transition: {
+                  delay: 5 + index * 0.1,
+                  scale: {
+                    duration: 0.1,
+                  }
+                },
+              },
+              thumb: {
+                opacity: 1,
+                width: THUMB_WIDTH,
+                height: THUMB_HEIGHT,
+                marginBottom: THUMB_GAP,
+                scale: 1,
+                x: 0,
+              },
+            }}
+            transition={{
+              duration: THUMB_ANIMATION_DURATION
+            }}
+            whileHover={{
+              scale: 1.05,
+              transition: {
+                duration: 0.3,
+                type: "tween",
+              }
+            }}
+          >
+            {/* Box shadow effect */}
+            <motion.div
+              className={"inset-2 absolute"}
+              animate={isSelected ? "selected" : "unselected"}
+              variants={
+                {
+                  unselected: {
+                    boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
+                  },
+                  selected: {
+                    boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+                  },
+                }
+              }
+
+            />
+            <Image
+              width={THUMB_WIDTH}
+              height={THUMB_HEIGHT}
+              src={src}
+              alt={imageName}
+              priority={index === 0 || index === 1}
+              className={"w-full h-full object-cover pointer-events-none"}
+              style={{
+                maskImage: THUMB_MASK_URL,
+                WebkitMaskImage: THUMB_MASK_URL,
+                maskSize: "100% 100%",
+                WebkitMaskSize: "100% 100%",
+                filter: isSelected ? "grayscale(100%)" : "grayscale(0%)",
+                boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+              }}
+            />
+          </motion.div>
+        })}
+      </div>
+    </motion.div>
+  );
 }
