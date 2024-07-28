@@ -4,15 +4,21 @@ import { motion } from "framer-motion";
 import { PropsWithChildren, useState } from "react";
 import ButtonMenu from "@/components/Menu/ButtonMenu";
 import NavMenu from "@/components/Menu/NavMenu";
+import useSound from "@/hooks/useSound";
 
 export default function MenuContainer({children}: PropsWithChildren) {
   const [isOpen, setIsOpen] = useState(false);
+  const { play : playCameraSound } = useSound("/sounds/camera.mp3");
+  const { play : playClickSound } = useSound("/sounds/click.mp3");
 
   const handleOnClickBurger = () => {
+    playClickSound().then()
     setIsOpen((prevState) => !prevState);
+
   }
 
   const handleClose = () => {
+    playCameraSound().then()
     setIsOpen(false);
   }
 
