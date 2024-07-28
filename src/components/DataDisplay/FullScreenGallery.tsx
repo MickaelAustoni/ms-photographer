@@ -16,16 +16,17 @@ interface FullScreenGalleryProps {
   Context?: Context<{ intro: boolean; setIntro: (bool: boolean) => void }>
 }
 
-const THUMB_ANIMATION_DURATION = 0.5;
 const THUMB_GAP = 15;
 const THUMB_WIDTH = 250;
 const THUMB_HEIGHT = 150;
 const THUMB_MASK_URL = "url(/images/mask-thumb.png)";
 const THUMB_OVERFLOW_MASK_URL = "url(/images/mask-thumb-overflow.png)";
 const SPRITE_MASK_URL = "url(/images/mask-sprite.png)";
-const SPRITE_ANIMATION_DURATION = 1.2;
-const SELECTED_IMAGE_DURATION = 2;
 const PARALLAX_MULTIPLIER = 200;
+const SELECTED_IMAGE_DURATION = 2;
+const THUMB_ANIMATION_DURATION = 0.5;
+const SPRITE_ANIMATION_DURATION = 1.2;
+const MASK_IMAGE_TRANSITION_DURATION = SELECTED_IMAGE_DURATION * 2
 
 const parallaxTransformer = (value: number) => {
   return -Math.abs(value / PARALLAX_MULTIPLIER)
@@ -96,9 +97,14 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       <motion.div
         key={selectedImageIndex}
         className={"absolute pointer-events-none inset-0 z-20"}
-        initial={{opacity: 1}}
-        animate={{opacity: 0}}
-        transition={{duration: SELECTED_IMAGE_DURATION * 2}}
+        initial={{
+          opacity: 1}}
+        animate={{
+          opacity: 0
+        }}
+        transition={{
+          duration: MASK_IMAGE_TRANSITION_DURATION
+        }}
         style={{
           x: smoothX,
           y: smoothY,
@@ -185,6 +191,9 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             <motion.div
               className={"inset-2 absolute"}
               animate={isSelected ? "selected" : "unselected"}
+              transition={{
+                duration: SELECTED_IMAGE_DURATION,
+              }}
               variants={
                 {
                   unselected: {
@@ -209,8 +218,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                 WebkitMaskImage: THUMB_MASK_URL,
                 maskSize: "100% 100%",
                 WebkitMaskSize: "100% 100%",
-                filter: isSelected ? "grayscale(100%)" : "grayscale(0%)",
-                boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
               }}
             />
           </motion.div>
