@@ -7,7 +7,8 @@ import { PointerEvent } from "react";
 
 const ContextFallback = createContext({
   intro: true,
-  setIntro: (bool: boolean) => {}
+  setIntro: (bool: boolean) => {
+  }
 });
 
 interface FullScreenGalleryProps {
@@ -30,26 +31,13 @@ const parallaxTransformer = (value: number) => {
   return -Math.abs(value / PARALLAX_MULTIPLIER)
 }
 
-const getVariant = (index: number, selectedImage: number, intro: boolean) => {
-  if (index === 0 && intro) {
-    return "thumb";
-  }
-
-  if (intro) {
-    return "intro";
-  }
-
-  return selectedImage === index ? "thumb" : "thumb"
-}
-
 const ImageBackground = ({src}: { src: string }) => {
   return <Image
     src={src}
-    alt="Photo"
-    height={1920}
-    width={1080}
+    alt="Background"
     className={"w-full h-full object-cover"}
     priority={true}
+    fill={true}
   />
 }
 
@@ -57,7 +45,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const [selectedImageIndex, setsSelectedImageIndex] = useState(0);
   const [beforeLastSelectedImageIndex, setBeforeLastSelectedImageIndex] = useState(-1);
   const [intro, setIntro] = useState(true);
-  const { intro: introContext, setIntro: setIntroContext } = useContext(Context);
+  const {intro: introContext, setIntro: setIntroContext} = useContext(Context);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
@@ -83,7 +71,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   }
 
   return <>
-    {/* Overlay */}
+    {/* Overlay dot */}
     <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"}/>
 
     {/* Selected image background */}
@@ -127,7 +115,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
     {/* Thumbnails */}
     <div
-      className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-3 pr-3 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
+      className={"h-4/5 items-center overflow-auto absolute bottom-0 pt-20 pb-10 right-0 px-6 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}
       style={{
         height: THUMB_HEIGHT * 4,
         maskImage: THUMB_OVERFLOW_MASK_URL,
@@ -138,12 +126,16 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       }}
     >
       {images.map((src, index) => {
+        const isSelected = selectedImageIndex === index;
+        const test = introContext !== undefined ? introContext : intro
+        const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
+
         return <motion.div
           key={src + index}
           onClick={handleClick(index)}
-          animate={getVariant(index, selectedImageIndex, introContext !== undefined ? introContext : intro)}
+          animate={test ? "intro" : "thumb"}
           onAnimationComplete={handleOnAnimationComplete}
-          className={"cursor-pointer"}
+          className={"cursor-pointer relative"}
           style={{
             width: THUMB_WIDTH,
             height: THUMB_HEIGHT,
@@ -176,14 +168,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
               scale: 1,
               x: 0,
             },
-            selected: {
-              x: 0,
-              opacity: 0,
-              marginBottom: 0,
-              width: 0,
-              height: 0,
-              scale: 0.5,
-            },
           }}
           transition={{
             duration: THUMB_ANIMATION_DURATION
@@ -192,22 +176,39 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             scale: 1.05,
             transition: {
               duration: 0.3,
-              type: "spring",
+              type: "tween",
             }
           }}
         >
+          {/* Box shadow effect */}
+          <motion.div
+            className={"inset-2 absolute"}
+            animate={isSelected ? "selected" : "unselected"}
+            variants={
+              {
+                unselected: {
+                  boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
+                },
+                selected: {
+                  boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+                },
+              }
+            }
+
+          />
           <Image
+            fill
             src={src}
-            alt="Thumbnail"
+            alt={imageName}
             priority={index === 0 || index === 1}
-            height={1920}
-            width={1080}
             className={"w-full h-full object-cover pointer-events-none"}
             style={{
               maskImage: THUMB_MASK_URL,
               WebkitMaskImage: THUMB_MASK_URL,
               maskSize: "100% 100%",
               WebkitMaskSize: "100% 100%",
+              filter: isSelected ? "grayscale(100%)" : "grayscale(0%)",
+              boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
             }}
           />
         </motion.div>
