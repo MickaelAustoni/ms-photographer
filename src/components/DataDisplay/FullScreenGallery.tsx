@@ -97,6 +97,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     if (variantName === "intro") {
       setIntro(false);
       setIntroContext(false);
+      return
     }
 
     if (variantName === "transition") {
