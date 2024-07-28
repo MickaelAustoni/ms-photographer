@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Context, createContext, useContext, useState } from "react";
-import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
+import { Context, createContext, ElementRef, useContext, useEffect, useRef, useState } from "react";
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 
@@ -11,7 +11,8 @@ const ContextFallback = createContext<{
   setIntro: (bool: boolean) => void;
 }>({
   intro: true,
-  setIntro: () => {}
+  setIntro: () => {
+  }
 });
 
 interface FullScreenGalleryProps {
@@ -55,8 +56,12 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
   const smoothY = useSpring(useTransform(mouseY, parallaxTransformer));
+  const thumbContainerRef = useRef<ElementRef<"div">>(null);
+  const {scrollYProgress: scrollYProgressThumbContainerRef} = useScroll({container: thumbContainerRef});
   const selectedImageSrc = images[selectedImageIndex];
-  const maskSrc = beforeLastSelectedImageIndex === -1 ? "" : images[beforeLastSelectedImageIndex]
+  const maskSrc = beforeLastSelectedImageIndex === -1 ? "" : images[beforeLastSelectedImageIndex];
+  const indicatorOpacity = useSpring(useTransform(scrollYProgressThumbContainerRef, [0, 0.05], [1, 0]));
+  const isIntro = introContext !== undefined ? introContext : intro
 
   const handleClick = (index: number) => () => {
     setBeforeLastSelectedImageIndex(selectedImageIndex);
@@ -74,6 +79,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       setIntroContext(false);
     }
   }
+
 
   return (
     <motion.div onPointerMove={handlePointerMove}>
@@ -126,9 +132,33 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
 
       {/* Thumbnails */}
-      <div className={"items-center absolute bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
-        <ScrollIndicator style={{marginTop: "15%"}}/>
+      <div
+        className={"items-center absolute bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          animate={intro ? "intro" : "normal"}
+          variants={
+            {
+              intro: {
+                opacity: 0,
+              },
+              normal: {
+                opacity: 1,
+              },
+            }
+          }
+          transition={{
+            delay: 1
+          }}
+          style={{
+            opacity: indicatorOpacity,
+          }}>
+          <ScrollIndicator style={{marginTop: "10%"}}/>
+        </motion.div>
+
         <div
+          ref={thumbContainerRef}
           className={"overflow-auto px-6"}
           style={{
             paddingTop: "35%",
@@ -143,13 +173,12 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         >
           {images.map((src, index) => {
             const isSelected = selectedImageIndex === index;
-            const test = introContext !== undefined ? introContext : intro
             const imageName = src.split("/").pop()?.split(".")[0] || "Thumbnail";
 
             return <motion.div
               key={src + index}
               onClick={handleClick(index)}
-              animate={test ? "intro" : "thumb"}
+              animate={isIntro ? "intro" : "thumb"}
               onAnimationComplete={handleOnAnimationComplete}
               className={"cursor-pointer relative"}
               style={{
@@ -213,7 +242,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                     },
                   }
                 }
-
               />
               <Image
                 width={THUMB_WIDTH}
