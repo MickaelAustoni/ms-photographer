@@ -203,12 +203,10 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             width={1080}
             className={"w-full h-full object-cover pointer-events-none"}
             style={{
-              ...(selectedImageIndex !== index && {
-                maskImage: THUMB_MASK_URL,
-                WebkitMaskImage: THUMB_MASK_URL,
-                maskSize: "100% 100%",
-                WebkitMaskSize: "100% 100%",
-              }),
+              maskImage: THUMB_MASK_URL,
+              WebkitMaskImage: THUMB_MASK_URL,
+              maskSize: "100% 100%",
+              WebkitMaskSize: "100% 100%",
             }}
           />
         </motion.div>
