@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { Context, createContext, ElementRef, useContext, useRef, useState } from "react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 
@@ -30,6 +30,7 @@ const PARALLAX_MULTIPLIER = 200;
 const SELECTED_IMAGE_DURATION = 2;
 const THUMB_ANIMATION_DURATION = 0.5;
 const SPRITE_ANIMATION_DURATION = 1.2;
+const TRANSITION_DURATION = 2.5;
 const MASK_IMAGE_TRANSITION_DURATION = SELECTED_IMAGE_DURATION * 2
 
 const parallaxTransformer = (value: number) => {
@@ -51,6 +52,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const [selectedImageIndex, setsSelectedImageIndex] = useState(0);
   const [beforeLastSelectedImageIndex, setBeforeLastSelectedImageIndex] = useState(-1);
   const [intro, setIntro] = useState(true);
+  const [transition, setTransition] = useState(false);
   const {intro: introContext, setIntro: setIntroContext} = useContext(Context);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -61,11 +63,17 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const selectedImageSrc = images[selectedImageIndex];
   const maskSrc = beforeLastSelectedImageIndex === -1 ? "" : images[beforeLastSelectedImageIndex];
   const indicatorOpacity = useSpring(useTransform(scrollYProgressThumbContainerRef, [0, 0.05], [1, 0]));
-  const isIntro = introContext !== undefined ? introContext : intro
+  const isIntro = introContext !== undefined ? introContext : intro;
+  const variant = transition ? "transition" : isIntro ? "intro" : "normal";
 
   const handleClick = (index: number) => () => {
+    if (index === selectedImageIndex || transition) {
+      return;
+    }
+
     setBeforeLastSelectedImageIndex(selectedImageIndex);
     setsSelectedImageIndex(index);
+    setTransition(true);
   };
 
   const handlePointerMove = (e: PointerEvent) => {
@@ -77,6 +85,10 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     if (variantName === "intro") {
       setIntro(false);
       setIntroContext(false);
+    }
+
+    if (variantName === "transition") {
+      setTransition(false);
     }
   }
 
@@ -136,37 +148,36 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
         {/* Scroll Indicator */}
         <motion.div
-          animate={isIntro ? "intro" : "normal"}
-          variants={
-            {
+          animate={variant}
+          variants={{
               intro: {
                 opacity: 0,
               },
               normal: {
                 opacity: 1,
               },
-            }
-          }
+              transition: {
+                opacity: 0,
+              }
+            }}
           transition={{
             delay: 1
           }}
           style={{
             opacity: indicatorOpacity,
           }}>
-          <ScrollIndicator style={{ marginTop: "10%" }} className={"-translate-x-1/2 left-1/2"}/>
+          <ScrollIndicator style={{marginTop: "10%"}} className={"-translate-x-1/2 left-1/2"}/>
         </motion.div>
 
         <div
           ref={thumbContainerRef}
-          className={"overflow-auto px-6"}
+          className={`overflow-y-auto px-6`}
           style={{
             paddingTop: "35%",
             paddingBottom: "35%",
             height: THUMB_HEIGHT * 5,
             maskImage: THUMB_OVERFLOW_MASK_URL,
-            WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
             maskSize: "100% 100%",
-            WebkitMaskSize: "100% 100%",
           }}
         >
           {images.map((src, index) => {
@@ -176,7 +187,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             return <motion.div
               key={src + index}
               onClick={handleClick(index)}
-              animate={isIntro ? "intro" : "thumb"}
+              animate={variant}
               onAnimationComplete={handleOnAnimationComplete}
               className={"cursor-pointer relative"}
               style={{
@@ -203,7 +214,19 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                     }
                   },
                 },
-                thumb: {
+                transition: {
+                  opacity: [1, 0, 0],
+                  scale: isSelected ? [1, 1.2, 1] : 1,
+                  x: [0, -15, THUMB_WIDTH * 1.5, THUMB_WIDTH * 2, THUMB_WIDTH * 1.5, 0],
+                  rotateY: [0, 90, 0],
+                  rotateZ: [0, 30, 0],
+                  rotateX: [0, 90, 0],
+                  transition: {
+                    duration: TRANSITION_DURATION,
+                    delay: isSelected ? 0: 0.2,
+                  },
+                },
+                normal: {
                   opacity: 1,
                   width: THUMB_WIDTH,
                   height: THUMB_HEIGHT,
