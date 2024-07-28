@@ -165,7 +165,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
             paddingBottom: "35%",
             height: THUMB_HEIGHT * 5,
             maskImage: THUMB_OVERFLOW_MASK_URL,
-            scrollSnapType: "y mandatory",
             WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
             maskSize: "100% 100%",
             WebkitMaskSize: "100% 100%",
