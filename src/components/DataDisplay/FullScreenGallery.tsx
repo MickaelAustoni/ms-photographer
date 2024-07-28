@@ -1,8 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { Context, createContext, ElementRef, useContext, useEffect, useRef, useState } from "react";
-import { motion, useMotionValue, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
+import { Context, createContext, ElementRef, useContext, useRef, useState } from "react";
+import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 
