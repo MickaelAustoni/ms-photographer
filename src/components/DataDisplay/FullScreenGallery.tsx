@@ -137,7 +137,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
         {/* Scroll Indicator */}
         <motion.div
-          animate={intro ? "intro" : "normal"}
+          animate={isIntro ? "intro" : "normal"}
           variants={
             {
               intro: {
