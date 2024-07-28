@@ -7,10 +7,10 @@ export default function Home() {
       Context={FullScreenGalleryContext}
       images={[
         "/images/gallery/portrait/michael-sanchez-portrait.webp",
-        "/images/gallery/portrait/femme-avion-regard-ciel.webp",
-        "/images/gallery/sport/bmw-gs.webp",
         "/images/gallery/portrait/femme-avion-assise.webp",
+        "/images/gallery/sport/bmw-gs.webp",
         "/images/gallery/event/violoncelliste-soir.webp",
+        "/images/gallery/portrait/femme-avion-regard-ciel.webp",
         "/images/gallery/event/violoncelliste-et-trompettiste.webp",
         "/images/gallery/portrait/femme-porche.webp",
         "/images/gallery/event/guitariste-saxophoniste.webp",

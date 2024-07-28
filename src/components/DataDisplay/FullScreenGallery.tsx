@@ -33,11 +33,12 @@ const parallaxTransformer = (value: number) => {
 
 const ImageBackground = ({src}: { src: string }) => {
   return <Image
+    fill
+    sizes="100vw"
     src={src}
     alt="Background"
     className={"w-full h-full object-cover"}
     priority={true}
-    fill={true}
   />
 }
 
@@ -197,7 +198,8 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
           />
           <Image
-            fill
+            width={THUMB_WIDTH}
+            height={THUMB_HEIGHT}
             src={src}
             alt={imageName}
             priority={index === 0 || index === 1}
