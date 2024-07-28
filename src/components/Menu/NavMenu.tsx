@@ -29,7 +29,7 @@ const variants = {
 
 export default function NavMenu({isOpen, onClose}: NavMenuProps) {
   return (
-    <nav className={"absolute right-9 top-24 text-right z-[300]"} style={{
+    <nav className={"absolute right-9 top-24 text-right text-white z-[300]"} style={{
       display: isOpen ? "block" : "none"
     }}>
       <motion.ul
@@ -51,13 +51,17 @@ export default function NavMenu({isOpen, onClose}: NavMenuProps) {
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
           <a href={"https://www.instagram.com/michael_sanchez_photographie/"} target={"_blank"} rel={"noreferrer"}>
-            <Image src={"/images/svg/instagram.svg"} alt={"Instagram"} width="25" height="25"
-                   className={"inline-block hover:opacity-[0.7]"}/>
+            <Image src={"/images/svg/instagram.svg"} alt={"Instagram"} width="25" height="25" className={"inline-block hover:opacity-[0.7]"}/>
           </a>
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
           <a href={"https://www.facebook.com/profile.php?id=100075952735526"} target={"_blank"} rel={"noreferrer"}>
             <Image src={"/images/svg/facebook.svg"} alt={"Facebook"} width="25" height="25" className={"inline-block hover:opacity-[0.7]"}/>
+          </a>
+        </motion.li>
+        <motion.li className={"p-2 tracking-widest"} variants={variants}>
+          <a href={"tel:"} rel={"noreferrer"}>
+            <Image src={"/images/svg/phone.svg"} alt={"Téléphone"} width="25" height="25" className={"inline-block hover:opacity-[0.7]"}/>
           </a>
         </motion.li>
       </motion.ul>
