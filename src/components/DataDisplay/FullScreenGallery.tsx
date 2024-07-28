@@ -1,8 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { Context, createContext, ElementRef, useContext, useRef, useState } from "react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { Context, createContext, ElementRef, useContext, useEffect, useRef, useState } from "react";
+import {
+  AnimatePresence,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useScroll,
+  useSpring,
+  useTransform
+} from "framer-motion";
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 
@@ -11,13 +19,15 @@ const ContextFallback = createContext<{
   setIntro: (bool: boolean) => void;
 }>({
   intro: true,
-  setIntro: () => {
-  }
+  setIntro: (bool: boolean) => {},
 });
 
 interface FullScreenGalleryProps {
   images: string[];
-  Context?: Context<{ intro: boolean; setIntro: (bool: boolean) => void }>
+  Context?: Context<{
+    intro: boolean;
+    setIntro: (bool: boolean) => void;
+  }>
 }
 
 const THUMB_GAP = 15;
@@ -52,6 +62,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const [selectedImageIndex, setsSelectedImageIndex] = useState(0);
   const [beforeLastSelectedImageIndex, setBeforeLastSelectedImageIndex] = useState(-1);
   const [intro, setIntro] = useState(true);
+  const [scrollIndicator, setScrollIndicator] = useState(true);
   const [transition, setTransition] = useState(false);
   const {intro: introContext, setIntro: setIntroContext} = useContext(Context);
   const mouseX = useMotionValue(0);
@@ -59,10 +70,10 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
   const smoothY = useSpring(useTransform(mouseY, parallaxTransformer));
   const thumbContainerRef = useRef<ElementRef<"div">>(null);
-  const {scrollYProgress: scrollYProgressThumbContainerRef} = useScroll({container: thumbContainerRef});
+  const {scrollYProgress: scrollYProgressThumbContainer} = useScroll({container: thumbContainerRef});
   const selectedImageSrc = images[selectedImageIndex];
   const maskSrc = beforeLastSelectedImageIndex === -1 ? "" : images[beforeLastSelectedImageIndex];
-  const indicatorOpacity = useSpring(useTransform(scrollYProgressThumbContainerRef, [0, 0.05], [1, 0]));
+  const indicatorOpacity = useSpring(useTransform(scrollYProgressThumbContainer, [0, 0.05], [1, 0]));
   const isIntro = introContext !== undefined ? introContext : intro;
   const variant = transition ? "transition" : isIntro ? "intro" : "normal";
 
@@ -92,6 +103,33 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
     }
   }
 
+  useMotionValueEvent(indicatorOpacity, "change", (opacity) => {
+    if (opacity <= 0 && !isIntro) {
+      setScrollIndicator(false);
+    }
+  })
+
+  // Hide scroll indicator when reaching the end of the thumbnails
+  useEffect(() => {
+    const unsubscribeIndicatorOpacity = indicatorOpacity.on("change", (opacity) => {
+      if (opacity <= 0 && !isIntro) {
+        setScrollIndicator(false);
+      }
+    });
+
+    const unsubscribeScrollYProgressThumbContainer = scrollYProgressThumbContainer.on("change", (scroll) => {
+      if (scroll >= 1) {
+        console.log("scroll", scroll)
+        setScrollIndicator(false);
+      }
+    });
+
+    return () => {
+      unsubscribeIndicatorOpacity()
+      unsubscribeScrollYProgressThumbContainer()
+    }
+  }, [indicatorOpacity, isIntro, scrollYProgressThumbContainer])
+
   return (
     <motion.div onPointerMove={handlePointerMove}>
       {/* Overlay dot */}
@@ -99,7 +137,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
       {/* Selected image background */}
       <motion.div
-        key={selectedImageSrc}
         className={"absolute inset-0 z-10"}
         initial={{opacity: 0}}
         animate={{opacity: 1}}
@@ -147,27 +184,29 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         className={"items-center absolute bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
 
         {/* Scroll Indicator */}
-        <motion.div
-          animate={variant}
-          variants={{
-            intro: {
-              opacity: 0,
-            },
-            normal: {
-              opacity: 1,
-            },
-            transition: {
-              opacity: 0,
-            }
-          }}
-          transition={{
-            delay: 1
-          }}
-          style={{
-            opacity: indicatorOpacity,
-          }}>
-          <ScrollIndicator style={{marginTop: "10%"}} className={"-translate-x-1/2 left-1/2"}/>
-        </motion.div>
+        <AnimatePresence>
+          {scrollIndicator && <motion.div
+            animate={variant}
+            variants={{
+              intro: {
+                opacity: 0,
+              },
+              normal: {
+                opacity: 1,
+              },
+              transition: {
+                opacity: 0,
+              }
+            }}
+            transition={{
+              delay: 1
+            }}
+            style={{
+              opacity: indicatorOpacity,
+            }}>
+            <ScrollIndicator style={{marginTop: "10%"}} className={"-translate-x-1/2 left-1/2"}/>
+          </motion.div>}
+        </AnimatePresence>
 
         <div
           ref={thumbContainerRef}
