@@ -32,14 +32,14 @@ const parallaxTransformer = (value: number) => {
 
 const getVariant = (index: number, selectedImage: number, intro: boolean) => {
   if (index === 0 && intro) {
-    return "selected";
+    return "thumb";
   }
 
   if (intro) {
     return "intro";
   }
 
-  return selectedImage === index ? "selected" : "thumb"
+  return selectedImage === index ? "thumb" : "thumb"
 }
 
 const ImageBackground = ({src}: { src: string }) => {
@@ -131,6 +131,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       style={{
         height: THUMB_HEIGHT * 4,
         maskImage: THUMB_OVERFLOW_MASK_URL,
+        scrollSnapType: "y mandatory",
         WebkitMaskImage: THUMB_OVERFLOW_MASK_URL,
         maskSize: "100% 100%",
         WebkitMaskSize: "100% 100%",
