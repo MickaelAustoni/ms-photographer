@@ -144,9 +144,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       {/* Selected image background */}
       <motion.div
         className={"absolute inset-0 z-10"}
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{duration: SELECTED_IMAGE_DURATION}}
         style={{
           y: smoothY,
           x: smoothX,
