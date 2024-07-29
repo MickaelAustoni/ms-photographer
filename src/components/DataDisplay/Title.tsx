@@ -8,14 +8,14 @@ const TITLE = "Michael Sanchez Photography";
 const LOGO_WIDTH = 400;
 const LOGO_HEIGHT = 391;
 
-const TEXT_VARIANTS : Variants = {
+const TEXT_VARIANTS: Variants = {
   hidden: {
     pathLength: 0,
     opacity: 0,
     fill: "rgba(255,255,255,0)"
   },
-  visible: (i : number) => {
-    const delay =  (i + 2) * (0.1);
+  visible: (i: number) => {
+    const delay = (i + 2) * (0.1);
 
     return {
       pathLength: 1,
@@ -55,6 +55,7 @@ export default function Title() {
         className={"z-[100] indent-[-9999px] text-[0] absolute select-none justify-center items-center flex"}
         onAnimationComplete={handleAnimationComplete}
         initial={{
+          opacity: 1,
           x: 0,
           y: 0,
           height: "100%",
@@ -62,19 +63,28 @@ export default function Title() {
           backgroundColor: "rgba(0,0,0,1)",
         }}
         animate={{
+          opacity: 1,
           x: 20,
           y: 20,
           height: LOGO_HEIGHT / 2,
           width: LOGO_WIDTH / 2,
-          backgroundColor: "rgba(255,255,255,0)"
+          backgroundColor: "rgba(255,255,255,0)",
+          transition: {
+            delay: isAnimating ? 4.2 : 0,
+            type: "spring",
+            duration: 1,
+            backgroundColor: {
+              delay: 4,
+              duration: 0.35
+            }
+          }
         }}
-        transition={{
-          delay: 4.2,
-          type: "spring",
-          duration: 1,
-          backgroundColor: {
-            delay: 4,
-            duration: 0.35
+        whileHover={isAnimating ? undefined : {
+          opacity: 0.7,
+          scale: 0.95,
+          transition: {
+            duration: 0.3,
+            delay: 0
           }
         }}
       >
