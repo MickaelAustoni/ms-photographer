@@ -38,7 +38,7 @@ const NavLink = ({href, children, onClick}: { href: string, children: ReactNode,
     <Link
       href={href}
       onClick={onClick}
-      className={`hover:opacity-[0.7]${isActive ? " font-[900]" : ""}`}>
+      className={`${isActive ? "font-[900]" : "hover:opacity-[0.7]"}`}>
       {children}
     </Link>
   )
@@ -79,7 +79,7 @@ export default function NavMenu({isOpen, onClose}: NavMenuProps) {
           </a>
         </motion.li>
         <motion.li className={"p-2 tracking-widest"} variants={variants}>
-          <a href={"tel:"} rel={"noreferrer"}>
+          <a href={"tel:0637115286"} rel={"noreferrer"}>
             <Image src={"/images/svg/phone.svg"} alt={"Téléphone"} width="25" height="25"
                    className={"inline-block hover:opacity-[0.7]"}/>
           </a>

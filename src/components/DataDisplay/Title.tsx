@@ -81,9 +81,9 @@ export default function Title() {
         }}
         whileHover={isAnimating ? undefined : {
           opacity: 0.7,
-          scale: 0.95,
+          scale: 0.98,
           transition: {
-            duration: 0.3,
+            duration: 0.15,
             delay: 0
           }
         }}
