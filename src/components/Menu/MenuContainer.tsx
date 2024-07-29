@@ -12,13 +12,12 @@ export default function MenuContainer({children}: PropsWithChildren) {
   const { play : playClickSound } = useSound("/sounds/click.mp3");
 
   const handleOnClickBurger = () => {
-    playClickSound().then()
+    playClickSound();
     setIsOpen((prevState) => !prevState);
-
   }
 
   const handleClose = () => {
-    playCameraSound().then()
+    playCameraSound();
     setIsOpen(false);
   }
 

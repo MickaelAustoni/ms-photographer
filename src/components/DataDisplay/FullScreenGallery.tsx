@@ -13,6 +13,7 @@ import {
 } from "framer-motion";
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
+import useSound from "@/hooks/useSound";
 
 const ContextFallback = createContext<{
   intro: boolean;
@@ -65,6 +66,8 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const [intro, setIntro] = useState(true);
   const [scrollIndicator, setScrollIndicator] = useState(true);
   const [transition, setTransition] = useState(false);
+  const {play: playSoundWhoosh} = useSound("/sounds/transition.mp3", 0.05);
+  const {play: playClickSound} = useSound("/sounds/click.mp3");
   const {intro: introContext, setIntro: setIntroContext} = useContext(Context);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -83,6 +86,8 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       return;
     }
 
+    playClickSound();
+    playSoundWhoosh();
     setBeforeLastSelectedImageIndex(selectedImageIndex);
     setsSelectedImageIndex(index);
     setTransition(true);
