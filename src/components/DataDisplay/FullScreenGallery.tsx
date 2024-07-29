@@ -150,7 +150,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
         style={{
           y: smoothY,
           x: smoothX,
-          scale: 1.1,
         }}
       >
         <ImageBackground src={selectedImageSrc}/>
@@ -172,7 +171,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           maskSize: "8400% 100%",
           WebkitAnimation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
           animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
-          scale: 1.1,
         }}
       >
         {maskSrc && <ImageBackground src={maskSrc}/>}
