@@ -173,7 +173,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       unsubscribeIndicatorOpacity()
       unsubscribeScrollYProgressThumbContainer()
     }
-  }, [indicatorOpacity, isIntro, scrollYProgressThumbContainer])
+  }, [indicatorOpacity, isIntro, scrollYProgressThumbContainer]);
 
   return (
     <motion.div onPointerMove={handlePointerMove}>
