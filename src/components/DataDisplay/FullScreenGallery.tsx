@@ -215,7 +215,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
       {/* Thumbnails */}
       <div
-        className={"items-center absolute bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
+        className={"justify-end absolute top-0 bottom-0 right-0 flex flex-col z-40 before:z-50 before:pointer-events-none before:bottom-0 before:right-0 before:fixed before:w-64 before:bg-gradient-to-b before:from-transparent before:to-black"}>
 
         {/* Scroll Indicator */}
         <AnimatePresence>
@@ -238,10 +238,9 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           style={{
             paddingTop: "35%",
             paddingBottom: "35%",
-            height: THUMB_HEIGHT * 5,
             maskImage: THUMB_OVERFLOW_MASK_URL,
             maskSize: "100% 100%",
-            maxHeight: "100vh",
+            height: "70%",
           }}
         >
           {images.map((src, index) => {
