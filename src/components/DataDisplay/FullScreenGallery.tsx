@@ -52,8 +52,8 @@ const parallaxTransformer = (value: number) => {
 const ImageBackground = ({src}: { src: string }) => {
   return (
     <Image
-      fill
       priority
+      fill
       sizes="100vw"
       src={src}
       alt="Background"
@@ -81,8 +81,8 @@ const ThumbnailImage = ({src, priority, alt}: { src: string, priority: boolean, 
         <span className="sr-only">Loading...</span>
       </div>}
       <Image
-        width={THUMB_WIDTH}
-        height={THUMB_HEIGHT}
+        fill
+        sizes={"100%"}
         src={src}
         alt={alt}
         priority={priority}
@@ -328,7 +328,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                   }
                 }
               />
-              <ThumbnailImage src={src} alt={imageName} priority={index === 0 || index === 1}/>
+              <ThumbnailImage src={src} alt={imageName} priority={index <= 3}/>
             </motion.div>
           })}
         </div>
