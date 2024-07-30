@@ -53,11 +53,11 @@ const ImageBackground = ({src}: { src: string }) => {
   return (
     <Image
       fill
+      priority
       sizes="100vw"
       src={src}
       alt="Background"
       className={"w-full h-full object-cover pointer-events-none"}
-      priority={true}
     />
   );
 }
