@@ -33,8 +33,6 @@ interface FullScreenGalleryProps {
 }
 
 const THUMB_GAP = 15;
-const THUMB_WIDTH = 250;
-const THUMB_HEIGHT = 150;
 const THUMB_MASK_URL = "url(/images/mask/mask-thumb.webp)";
 const THUMB_OVERFLOW_MASK_URL = "url(/images/mask/mask-thumb-overflow.webp)";
 const SPRITE_MASK_URL = "url(/images/sprite/mask-sprite-1.png)";
@@ -252,10 +250,8 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
               onClick={handleClick(index)}
               animate={variant}
               onAnimationComplete={handleOnAnimationComplete}
-              className={"cursor-pointer relative"}
+              className={"cursor-pointer relative h-36 w-64"}
               style={{
-                width: THUMB_WIDTH,
-                height: THUMB_HEIGHT,
                 marginBottom: THUMB_GAP,
                 flexShrink: 0,
                 minWidth: 0,
@@ -280,7 +276,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                 transition: {
                   opacity: [1, 0, 0],
                   scale: isSelected ? [1, 1.2, 1] : 1,
-                  x: [0, -15, THUMB_WIDTH * 1.5, THUMB_WIDTH * 2, THUMB_WIDTH * 1.5, 0],
+                  x: ["0%", "5%", "100%", "100%", "100%", "0%"],
                   rotateY: [0, 90, 0],
                   rotateZ: [0, 30, 0],
                   rotateX: [0, 90, 0],
@@ -291,8 +287,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                 },
                 normal: {
                   opacity: 1,
-                  width: THUMB_WIDTH,
-                  height: THUMB_HEIGHT,
                   marginBottom: THUMB_GAP,
                   scale: 1,
                   x: 0,
