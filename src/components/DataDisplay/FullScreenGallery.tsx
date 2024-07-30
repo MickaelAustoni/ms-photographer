@@ -232,7 +232,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
         <div
           ref={thumbContainerRef}
-          className={`overflow-y-auto px-6`}
+          className={"overflow-y-auto px-3 sm:px-4 md:px-6"}
           style={{
             paddingTop: "35%",
             paddingBottom: "35%",
@@ -250,7 +250,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
               onClick={handleClick(index)}
               animate={variant}
               onAnimationComplete={handleOnAnimationComplete}
-              className={"cursor-pointer relative h-36 w-64"}
+              className={"cursor-pointer relative w-32 h-20 sm:w-40 sm:h-24 md:w-64 md:h-36"}
               style={{
                 marginBottom: THUMB_GAP,
                 flexShrink: 0,

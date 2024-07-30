@@ -64,8 +64,8 @@ export default function Title() {
         }}
         animate={{
           opacity: 1,
-          x: 20,
-          y: 20,
+          x: 0,
+          y: 0,
           height: LOGO_HEIGHT / 2,
           width: LOGO_WIDTH / 2,
           backgroundColor: "rgba(255,255,255,0)",
@@ -99,6 +99,7 @@ export default function Title() {
           fill="transparent"
           strokeWidth={2}
           stroke="#fff"
+          className="p-5"
           style={{
             maxWidth: LOGO_WIDTH,
             maxHeight: LOGO_HEIGHT
