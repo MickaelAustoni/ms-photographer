@@ -10,6 +10,7 @@ interface CategoryPageProps {
 
 const images = {
   "event": [
+    "/images/gallery/event/trompettiste.webp",
     "/images/gallery/event/saxophoniste.webp",
     "/images/gallery/event/guitariste-relfet.webp",
     "/images/gallery/event/guitariste-saxophoniste.webp",
@@ -17,7 +18,6 @@ const images = {
     "/images/gallery/event/saxophoniste-et-guitariste.webp",
     "/images/gallery/event/duo-trompettiste.webp",
     "/images/gallery/event/trompettiste-et-saxophoniste.webp",
-    "/images/gallery/event/trompettiste.webp",
     "/images/gallery/event/violoncelliste-et-trompettiste.webp",
     "/images/gallery/event/violoncelliste-noir-et-blanc.webp",
     "/images/gallery/event/violoncelliste-reflet.webp",
