@@ -172,9 +172,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
   return (
     <motion.div onPointerMove={handlePointerMove}>
-      {/* Overlay dot */}
-      <div className={"absolute pointer-events-none inset-0 z-30 bg-[url('/images/overlay.png')] bg-[length:4px_4px]"}/>
-
       {/* Selected image background */}
       <motion.div
         className={"absolute inset-0 z-10"}
