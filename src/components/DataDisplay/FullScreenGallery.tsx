@@ -104,7 +104,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const [scrollIndicator, setScrollIndicator] = useState(true);
   const [transition, setTransition] = useState(false);
   const {play: playSoundWhoosh} = useSound("/sounds/transition.mp3", 0.05);
-  const {play: playClickSound} = useSound("/sounds/click.mp3");
   const {intro: introContext, setIntro: setIntroContext} = useContext(Context);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -123,7 +122,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       return;
     }
 
-    playClickSound();
     playSoundWhoosh();
     setBeforeLastSelectedImageIndex(selectedImageIndex);
     setsSelectedImageIndex(index);
