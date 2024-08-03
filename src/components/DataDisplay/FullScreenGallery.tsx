@@ -189,7 +189,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
       {/* Mask image */}
       <motion.div
-        key={selectedImageIndex}
+        key={`${selectedImageIndex}-mask`}
         className={"absolute pointer-events-none inset-0 z-20"}
         style={{
           x: smoothX,
