@@ -111,7 +111,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const thumbContainerRef = useRef<ElementRef<"div">>(null);
   const {scrollYProgress: scrollYProgressThumbContainer} = useScroll({container: thumbContainerRef});
   const selectedImageSrc = images[selectedImageIndex];
-  const maskSrc = beforeLastSelectedImageIndex === -1 ? "" : images[beforeLastSelectedImageIndex];
+  const maskSrc = beforeLastSelectedImageIndex === -1 ? selectedImageSrc : images[beforeLastSelectedImageIndex];
   const indicatorOpacity = useSpring(useTransform(scrollYProgressThumbContainer, [0, 0.05], [1, 0]));
   const isIntro = introContext !== undefined ? introContext : intro;
   const variant = transition ? "transition" : isIntro ? "intro" : "normal";
@@ -188,7 +188,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
       {/* Mask image */}
       <motion.div
-        key={`${selectedImageIndex}-mask`}
+        key={maskSrc}
         className={"absolute pointer-events-none inset-0 z-20"}
         style={{
           x: smoothX,
@@ -201,7 +201,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
         }}
       >
-        <ImageBackground src={maskSrc || selectedImageSrc}/>
+        <ImageBackground src={selectedImageSrc}/>
       </motion.div>
 
 
