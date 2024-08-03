@@ -39,9 +39,8 @@ const SPRITE_MASK_URL = "url(/images/sprite/mask-sprite-1.png)";
 const PARALLAX_MULTIPLIER = 200;
 const SELECTED_IMAGE_DURATION = 2;
 const THUMB_ANIMATION_DURATION = 0.5;
+const THUMB_VARIANT_TRANSITION_DURATION = 2.5;
 const SPRITE_ANIMATION_DURATION = 1.2;
-const TRANSITION_DURATION = 2.5;
-const MASK_IMAGE_TRANSITION_DURATION = SELECTED_IMAGE_DURATION * 2
 
 const parallaxTransformer = (value: number) => {
   return -Math.abs(value / PARALLAX_MULTIPLIER)
@@ -276,7 +275,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
                   rotateZ: [0, 30, 0],
                   rotateX: [0, 90, 0],
                   transition: {
-                    duration: TRANSITION_DURATION,
+                    duration: THUMB_VARIANT_TRANSITION_DURATION,
                     delay: isSelected ? 0 : 0.2,
                   },
                 },
