@@ -205,7 +205,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
           animation: `sprite-play ${SPRITE_ANIMATION_DURATION}s steps(83) forwards`,
         }}
       >
-        {maskSrc && <ImageBackground src={maskSrc}/>}
+        <ImageBackground src={maskSrc || selectedImageSrc}/>
       </motion.div>
 
 
