@@ -191,9 +191,6 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
       <motion.div
         key={selectedImageIndex}
         className={"absolute pointer-events-none inset-0 z-20"}
-        initial={{opacity: 1}}
-        animate={{opacity: 0}}
-        transition={{duration: MASK_IMAGE_TRANSITION_DURATION}}
         style={{
           x: smoothX,
           y: smoothY,
