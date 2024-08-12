@@ -302,25 +302,30 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
               }}
             >
               {/* Box shadow effect */}
-              <motion.div
-                className={"inset-2 absolute"}
-                animate={isSelected ? "selected" : "unselected"}
-                transition={{
-                  duration: SELECTED_IMAGE_DURATION,
-                }}
-                variants={
-                  {
-                    unselected: {
-                      boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
-                    },
-                    selected: {
-                      boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
-                    },
-                  }
+              <AnimatePresence>
+                {isSelected &&
+                  <motion.div
+                    className={"inset-2 absolute"}
+                    animate={isSelected ? "selected" : "unselected"}
+                    transition={{
+                      duration: SELECTED_IMAGE_DURATION,
+                    }}
+                    variants={
+                      {
+                        unselected: {
+                          boxShadow: "0 0 20px 5px rgba(255, 255, 255, 0)",
+                        },
+                        selected: {
+                          boxShadow: "0 0 10px 5px rgba(255, 255, 255, 1)",
+                        },
+                      }
+                    }
+                  />
                 }
-              />
+              </AnimatePresence>
               <ThumbnailImage src={src} alt={imageName} priority={index <= 3}/>
             </motion.div>
+
           })}
         </div>
       </div>
