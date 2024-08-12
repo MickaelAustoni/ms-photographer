@@ -14,6 +14,7 @@ import {
 import { PointerEvent } from "react";
 import ScrollIndicator from "@/components/Indicator/ScrollIndicator";
 import useSound from "@/hooks/useSound";
+import useIsTouchDevice from "@/hooks/useIsTouchDevice";
 
 const ContextFallback = createContext<{
   intro: boolean;
@@ -108,6 +109,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   const mouseY = useMotionValue(0);
   const smoothX = useSpring(useTransform(mouseX, parallaxTransformer));
   const smoothY = useSpring(useTransform(mouseY, parallaxTransformer));
+  const isTouchDevice = useIsTouchDevice()
   const thumbContainerRef = useRef<ElementRef<"div">>(null);
   const {scrollYProgress: scrollYProgressThumbContainer} = useScroll({container: thumbContainerRef});
   const selectedImageSrc = images[selectedImageIndex];
@@ -128,6 +130,11 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
   };
 
   const handlePointerMove = (e: PointerEvent) => {
+    // If mobile, don't move the cursor
+    if (isTouchDevice) {
+      return;
+    }
+
     mouseX.set(e.clientX);
     mouseY.set(e.clientY);
   }
