@@ -230,7 +230,7 @@ export default function FullScreenGallery({images, Context = ContextFallback}: F
 
         <div
           ref={thumbContainerRef}
-          className={"overflow-y-auto px-3 sm:px-4 md:px-6"}
+          className={"overflow-y-auto overflow-x-hidden px-3 sm:px-4 md:px-6"}
           style={{
             paddingTop: "35%",
             paddingBottom: "35%",
