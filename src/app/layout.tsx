@@ -14,8 +14,8 @@ const inter = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Michael Sanchez - Photographe",
-  description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  title: "Michael Sanchez - Photographe dans le Var",
+  description: "Photographe professionnel dans le Var (83). Spécialisé en photographie de mariage, portrait, événementiel et architecture. Disponible à Toulon et dans toute la région PACA.",
 };
 
 export default function RootLayout({children}: PropsWithChildren) {
